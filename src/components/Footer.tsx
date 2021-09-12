@@ -43,8 +43,6 @@ const footerText = css`
 
   font-weight: 400;
   font-size: 13px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
 `;
 const NavigationLink = styled.a`
   ${footerText}

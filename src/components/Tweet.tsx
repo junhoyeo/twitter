@@ -93,8 +93,6 @@ const DisplayName = styled.span`
 
   font-weight: 700;
   font-size: 15px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
 `;
 const Metadata = styled.span`
   margin-left: 4px;
@@ -105,8 +103,6 @@ const Metadata = styled.span`
 
   font-weight: 400;
   font-size: 15px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
 `;
 
 const Content = styled.div`
@@ -125,8 +121,6 @@ const Paragraph = styled.p`
 
   font-weight: 400;
   font-size: 15px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
 `;
 const ImageContainer = styled.div`
   margin-top: 12px;

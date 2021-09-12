@@ -3,9 +3,9 @@ import { createGlobalStyle, css } from 'styled-components';
 import normalize from 'styled-normalize';
 
 const systemFontStack = dedent`
-  "Inter", -apple-system,
+  TwitterChirp, "Inter", -apple-system,
   BlinkMacSystemFont, "Segoe UI",
-  Roboto, Helvetica, Arial, sans-serif
+  Roboto, Helvetica, Arial, sans-serif;
 `;
 
 const fonts = css`

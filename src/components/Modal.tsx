@@ -102,8 +102,6 @@ const Title = styled.span`
   text-align: left;
   font-size: 20px;
   font-weight: 700;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
   overflow-wrap: break-word;
 `;
 const Description = styled.span`
@@ -111,8 +109,6 @@ const Description = styled.span`
   color: rgb(110, 118, 125);
   font-weight: 400;
   font-size: 15px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
   line-height: 20px;
   overflow-wrap: break-word;
 `;
@@ -140,8 +136,6 @@ const buttonStyle = css`
 
   font-weight: 700;
   font-size: 15px;
-  font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, Helvetica, Arial, sans-serif;
   line-height: 20px;
 `;
 

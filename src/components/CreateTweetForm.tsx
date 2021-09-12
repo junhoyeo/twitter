@@ -1,9 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
+import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { useFirebase } from '../utils/firebase';
+import TextareaAutosize from 'react-textarea-autosize';
 
 export const CreateTweetForm = ({ userObj }) => {
   const [tweet, setTweet] = useState('');
+  const submitDisabled = useMemo(() => tweet.trim().length === 0, [tweet]);
   const [attachment, setAttachment] = useState('');
 
   const firebase = useFirebase();
@@ -68,46 +71,137 @@ export const CreateTweetForm = ({ userObj }) => {
     }
   };
   const onClearAttachment = () => setAttachment('');
+
   return (
-    <form onSubmit={onSubmit} className="factoryForm">
-      <div className="factoryInput__container">
-        <input
-          className="factoryInput__input"
+    <Form onSubmit={onSubmit}>
+      <AvatarContainer>
+        <Avatar src="https://github.com/junhoyeo.png" alt="avatar" />
+      </AvatarContainer>
+      <Content>
+        <Input
           value={tweet}
           onChange={onChange}
-          type="text"
-          placeholder="What's on your mind?"
-          maxLength={120}
+          placeholder="What's happening?"
         />
-        <input type="submit" value="&rarr;" className="factoryInput__arrow" />
-      </div>
-      <label htmlFor="attach-file" className="factoryInput__label">
-        <span>Add photos</span>
-        Plus
-      </label>
-      <input
-        id="attach-file"
-        type="file"
-        accept="image/*"
-        onChange={onFileChange}
-        style={{
-          opacity: 0,
-        }}
-      />
-      {attachment && (
-        <div className="factoryForm__attachment">
-          <img
-            src={attachment}
-            style={{
-              backgroundImage: attachment,
-            }}
-          />
-          <div className="factoryForm__clear" onClick={onClearAttachment}>
-            <span>Remove</span>
-            Times
+        <ToolbarContainer>
+          <Toolbar>
+            {/* <label htmlFor="attach-file">
+              <span>Add photos</span>
+              Plus
+            </label>
+            <input
+              id="attach-file"
+              type="file"
+              accept="image/*"
+              onChange={onFileChange}
+              style={{
+                opacity: 0,
+              }}
+            /> */}
+          </Toolbar>
+          <SubmitButton disabled={submitDisabled}>Tweet</SubmitButton>
+        </ToolbarContainer>
+        {attachment && (
+          <div>
+            <img
+              src={attachment}
+              style={{
+                backgroundImage: attachment,
+              }}
+            />
+            <div onClick={onClearAttachment}>
+              <span>Remove</span>
+              Times
+            </div>
           </div>
-        </div>
-      )}
-    </form>
+        )}
+      </Content>
+    </Form>
   );
 };
+
+const Form = styled.form`
+  display: flex;
+  width: 100%;
+  padding: 12px 16px;
+  display: flex;
+  border-top: 1px solid rgb(47, 51, 54);
+`;
+
+const AvatarContainer = styled.div`
+  margin-right: 12px;
+  display: flex;
+  flex-basis: 48px;
+  flex-grow: 0;
+`;
+const Avatar = styled.img`
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: rgb(0 0 0 / 2%) 0px 0px 2px inset;
+`;
+const Content = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled(TextareaAutosize)`
+  padding: 14px 0;
+  line-height: 24px;
+  font-size: 20px;
+  font-weight: 400;
+  background-color: transparent;
+  border: 0;
+  color: #d9d9d9;
+  width: 100%;
+  resize: none;
+
+  &::placeholder {
+    color: #6e767d;
+  }
+`;
+
+const ToolbarContainer = styled.div`
+  width: 100%;
+  padding-bottom: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+const Toolbar = styled.div`
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+`;
+
+const SubmitButton = styled.button`
+  margin-top: 12px;
+  margin-left: 12px;
+  padding: 0 16px;
+  min-width: 36px;
+  min-height: 36px;
+
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+
+  user-select: none;
+  border-radius: 48px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  background-color: rgb(29, 155, 240);
+
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      opacity: 0.5;
+    `};
+`;
