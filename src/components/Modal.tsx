@@ -1,3 +1,4 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import styled, { css } from 'styled-components';
 
@@ -25,45 +26,57 @@ export const Modal: React.FC<ModalProps> = ({
       callback();
     };
 
-  if (!isShown) {
-    return null;
-  }
-
   return (
-    <Background onClick={onDismiss}>
-      <Container>
-        <Title>{title}</Title>
-        <Description>{description}</Description>
-        <ButtonList>
-          {buttons.map(({ title, onClick, destructive }) =>
-            !destructive ? (
-              <CancelButton onClick={withoutPropagation(onClick)}>
-                {title}
-              </CancelButton>
-            ) : (
-              <DeleteButton onClick={withoutPropagation(onClick)}>
-                {title}
-              </DeleteButton>
-            ),
-          )}
-        </ButtonList>
-      </Container>
-    </Background>
+    <AnimatePresence>
+      {isShown && (
+        <Background
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ type: 'spring' }}
+          onClick={onDismiss}
+        >
+          <Container
+            initial={{ transform: 'translate3d(0, -350px, 0)' }}
+            animate={{ transform: 'translate3d(0, 0px, 0)' }}
+            exit={{ transform: 'translate3d(0, 350px, 0)' }}
+            transition={{ type: 'spring' }}
+          >
+            <Title>{title}</Title>
+            <Description>{description}</Description>
+            <ButtonList>
+              {buttons.map(({ title, onClick, destructive }) =>
+                !destructive ? (
+                  <CancelButton onClick={withoutPropagation(onClick)}>
+                    {title}
+                  </CancelButton>
+                ) : (
+                  <DeleteButton onClick={withoutPropagation(onClick)}>
+                    {title}
+                  </DeleteButton>
+                ),
+              )}
+            </ButtonList>
+          </Container>
+        </Background>
+      )}
+    </AnimatePresence>
   );
 };
-const Background = styled.div`
+const Background = styled(motion.div)`
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   bottom: 0;
+  cursor: pointer;
 
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(91, 112, 131, 0.4);
 `;
-const Container = styled.div`
+const Container = styled(motion.div)`
   padding: 32px;
   max-height: 100%;
   max-width: 320px;

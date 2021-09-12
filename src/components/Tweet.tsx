@@ -46,6 +46,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
       </Container>
       <Modal
         isShown={isDeleteModalOpen}
+        onDismiss={() => setDeleteModalOpen(false)}
         title="Delete Tweet?"
         description="This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Twitter search results."
         buttons={[
