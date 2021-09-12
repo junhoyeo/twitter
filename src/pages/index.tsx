@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import Nweet from '../components/Nweet';
-import NweetFactory from '../components/NweetFactory';
+import { Tweet } from '../components/Tweet';
+import { CreateTweetForm } from '../components/CreateTweetForm';
 import { useFirebase } from '../utils/firebase';
 
 const Home = () => {
-  const [nweets, setNweets] = useState([]);
+  const [tweets, setTweets] = useState([]);
   const firestore = useFirebase('firestore');
   const userObj = {
     displayName: 'Junho Yeo',
@@ -17,25 +17,25 @@ const Home = () => {
       return;
     }
     firestore
-      .collection('nweets')
+      .collection('tweets')
       .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
-        const nweetArray = snapshot.docs.map((doc) => ({
+        const tweetArray = snapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
-        setNweets(nweetArray);
+        setTweets(tweetArray);
       });
   }, []);
   return (
     <div className="container">
-      <NweetFactory userObj={userObj} />
+      <CreateTweetForm userObj={userObj} />
       <div style={{ marginTop: 30 }}>
-        {nweets.map((nweet) => (
-          <Nweet
-            key={nweet.id}
-            nweetObj={nweet}
-            isOwner={nweet.creatorId === userObj.uid}
+        {tweets.map((tweet) => (
+          <Tweet
+            key={tweet.id}
+            tweetObj={tweet}
+            isOwner={tweet.creatorId === userObj.uid}
           />
         ))}
       </div>

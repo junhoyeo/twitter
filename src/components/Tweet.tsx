@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useFirebase } from '../utils/firebase';
 
-const Nweet = ({ nweetObj, isOwner }) => {
+export const Tweet = ({ tweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
-  const [newNweet, setNewNweet] = useState(nweetObj.text);
+  const [newTweet, setNewTweet] = useState(tweetObj.text);
   const firebase = useFirebase();
   const firestore = firebase?.firestore();
   const storage = firebase?.storage();
@@ -12,10 +12,10 @@ const Nweet = ({ nweetObj, isOwner }) => {
     if (!firebase) {
       return;
     }
-    const ok = window.confirm('Are you sure you want to delete this nweet?');
+    const ok = window.confirm('Are you sure you want to delete this tweet?');
     if (ok) {
-      await firestore.doc(`nweets/${nweetObj.id}`).delete();
-      await storage.refFromURL(nweetObj.attachmentUrl).delete();
+      await firestore.doc(`tweets/${tweetObj.id}`).delete();
+      await storage.refFromURL(tweetObj.attachmentUrl).delete();
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
@@ -24,8 +24,8 @@ const Nweet = ({ nweetObj, isOwner }) => {
       return;
     }
     event.preventDefault();
-    await firestore.doc(`nweets/${nweetObj.id}`).update({
-      text: newNweet,
+    await firestore.doc(`tweets/${tweetObj.id}`).update({
+      text: newTweet,
     });
     setEditing(false);
   };
@@ -33,23 +33,23 @@ const Nweet = ({ nweetObj, isOwner }) => {
     const {
       target: { value },
     } = event;
-    setNewNweet(value);
+    setNewTweet(value);
   };
   return (
-    <div className="nweet">
+    <div className="tweet">
       {editing ? (
         <>
-          <form onSubmit={onSubmit} className="container nweetEdit">
+          <form onSubmit={onSubmit} className="container tweetEdit">
             <input
               type="text"
-              placeholder="Edit your nweet"
-              value={newNweet}
+              placeholder="Edit your tweet"
+              value={newTweet}
               required
               autoFocus
               onChange={onChange}
               className="formInput"
             />
-            <input type="submit" value="Update Nweet" className="formBtn" />
+            <input type="submit" value="Update Tweet" className="formBtn" />
           </form>
           <span onClick={toggleEditing} className="formBtn cancelBtn">
             Cancel
@@ -57,10 +57,10 @@ const Nweet = ({ nweetObj, isOwner }) => {
         </>
       ) : (
         <>
-          <h4>{nweetObj.text}</h4>
-          {nweetObj.attachmentUrl && <img src={nweetObj.attachmentUrl} />}
+          <h4>{tweetObj.text}</h4>
+          {tweetObj.attachmentUrl && <img src={tweetObj.attachmentUrl} />}
           {isOwner && (
-            <div className="nweet__actions">
+            <div className="tweet__actions">
               <span onClick={onDeleteClick}>Trash</span>
               <span onClick={toggleEditing}>Edit</span>
             </div>
@@ -70,5 +70,3 @@ const Nweet = ({ nweetObj, isOwner }) => {
     </div>
   );
 };
-
-export default Nweet;

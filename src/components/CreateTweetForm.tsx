@@ -2,8 +2,8 @@ import React, { useCallback, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { useFirebase } from '../utils/firebase';
 
-const NweetFactory = ({ userObj }) => {
-  const [nweet, setNweet] = useState('');
+export const CreateTweetForm = ({ userObj }) => {
+  const [tweet, setTweet] = useState('');
   const [attachment, setAttachment] = useState('');
 
   const firebase = useFirebase();
@@ -25,21 +25,21 @@ const NweetFactory = ({ userObj }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (nweet === '') {
+    if (tweet === '') {
       return;
     }
     let attachmentUrl: string | undefined;
     if (attachment !== '') {
       attachmentUrl = await uploadAttachment(attachment);
     }
-    const nweetObj = {
-      text: nweet,
+    const tweetObj = {
+      text: tweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
       attachmentUrl: attachmentUrl || '',
     };
-    await firestore.collection('nweets').add(nweetObj);
-    setNweet('');
+    await firestore.collection('tweets').add(tweetObj);
+    setTweet('');
     setAttachment('');
   };
 
@@ -47,7 +47,7 @@ const NweetFactory = ({ userObj }) => {
     const {
       target: { value },
     } = event;
-    setNweet(value);
+    setTweet(value);
   };
   const onFileChange = (event) => {
     const {
@@ -73,7 +73,7 @@ const NweetFactory = ({ userObj }) => {
       <div className="factoryInput__container">
         <input
           className="factoryInput__input"
-          value={nweet}
+          value={tweet}
           onChange={onChange}
           type="text"
           placeholder="What's on your mind?"
@@ -111,4 +111,3 @@ const NweetFactory = ({ userObj }) => {
     </form>
   );
 };
-export default NweetFactory;
