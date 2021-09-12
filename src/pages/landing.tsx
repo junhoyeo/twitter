@@ -1,30 +1,57 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 
 import { MobileContainer } from '../components/MobileContainer';
-import { onMobile, onHandset, useIsRelative } from '../utils/relatives';
+import {
+  onMobile,
+  onHandset,
+  useIsRelative,
+  Breakpoints,
+} from '../utils/relatives';
 
 import TwitterLogoIcon from './twitter.svg';
+import { Footer } from '../components/Footer';
+import useWindowSize from '../hooks/useWindowSize';
 
 const LandingPage = () => {
-  const isHandset = useIsRelative('Handset');
+  const { windowWidth, windowHeight } = useWindowSize();
+  const isHandset = windowWidth <= Breakpoints.Handset;
+
+  const [containerHeight, setContainerHeight] = useState<number | string>(
+    'auto',
+  );
+  const footerRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (!isHandset) {
+      return;
+    }
+    if (!!windowHeight && !!footerRef.current) {
+      const height = windowHeight - footerRef.current.offsetHeight;
+      if (height) {
+        setContainerHeight(height);
+      }
+    }
+  }, [isHandset, windowHeight, windowWidth]);
 
   return (
-    <Container>
-      <Content>
-        <Section>
-          <TwitterLogo />
-          <Title>
-            Happening
-            <Dynamic>{!isHandset ? ' ' : <br />}</Dynamic>
-            now
-          </Title>
-          <Subtitle>Join Twitter today.</Subtitle>
-        </Section>
-      </Content>
-      <CoverImage src="/images/landing-cover.png" />
-    </Container>
+    <Page>
+      <Container style={{ height: containerHeight }}>
+        <Content>
+          <Section>
+            <TwitterLogo />
+            <Title>
+              Happening
+              <Dynamic>{!isHandset ? ' ' : <br />}</Dynamic>
+              now
+            </Title>
+            <Subtitle>Join Twitter today.</Subtitle>
+          </Section>
+        </Content>
+        <CoverImage src="/images/landing-cover.png" />
+      </Container>
+      <Footer ref={footerRef} />
+    </Page>
   );
 };
 
@@ -36,10 +63,20 @@ const Dynamic = dynamic(async () => _Dynamic, {
   loading: () => <span>' '</span>,
 });
 
+const Page = styled.div`
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  ${onHandset} {
+    height: auto;
+  }
+`;
+
 const Container = styled.div`
   display: flex;
   flex-direction: row-reverse;
-  height: 100vh;
+  flex: 1;
   width: 100%;
 
   ${onHandset} {
@@ -54,6 +91,7 @@ const Content = styled(MobileContainer)`
   width: 100%;
 
   ${onHandset} {
+    margin-top: 16px;
     flex: 1;
   }
 
@@ -66,9 +104,13 @@ const Content = styled(MobileContainer)`
     padding: 20px;
 
     ${onHandset} {
-      padding: 0;
+      padding: 20px;
       max-width: 600px;
       align-items: flex-start;
+    }
+
+    ${onMobile} {
+      padding: 16px;
     }
   }
 `;
