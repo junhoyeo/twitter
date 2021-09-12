@@ -13,12 +13,11 @@ export const Tweet = ({ tweetObj, isOwner }) => {
       return;
     }
 
-    await Promise.all([
-      firebase.firestore().doc(`tweets/${tweetObj.id}`).delete(),
-      firebase.storage().refFromURL(tweetObj.attachmentUrl).delete(),
-    ]);
-
     setDeleteModalOpen(false);
+    setTimeout(() => {
+      firebase.firestore().doc(`tweets/${tweetObj.id}`).delete();
+      firebase.storage().refFromURL(tweetObj.attachmentUrl).delete();
+    }, 200);
   }, []);
 
   return (
