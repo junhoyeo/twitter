@@ -48,7 +48,12 @@ const LandingPage = () => {
             <Subtitle>Join Twitter today.</Subtitle>
           </Section>
         </Content>
-        <CoverImage src="/images/landing-cover.png" />
+        <RelativeCover>
+          <CoverImage src="/images/landing-cover.png" />
+          <AbsoluteCoverContent>
+            <WhiteBlueBird />
+          </AbsoluteCoverContent>
+        </RelativeCover>
       </Container>
       <Footer ref={footerRef} />
     </Page>
@@ -88,7 +93,6 @@ const Content = styled(MobileContainer)`
   margin-top: 36px;
   padding: 16px;
   min-width: 45vw;
-  width: 100%;
 
   ${onHandset} {
     margin-top: 16px;
@@ -143,15 +147,41 @@ const Subtitle = styled.h2`
   }
 `;
 
-const CoverImage = styled.img`
+const RelativeCover = styled.div`
   width: 100%;
   height: 100%;
   display: flex;
+  position: relative;
   flex: 1;
-  object-fit: cover;
 
   ${onHandset} {
     height: 45vh;
     flex: unset;
   }
+`;
+const CoverImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+const AbsoluteCoverContent = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9;
+`;
+const WhiteBlueBird = styled(TwitterLogoIcon)`
+  fill: white;
+  padding: 32px;
+  width: 100%;
+  height: 100%;
+  max-height: 380px;
 `;
