@@ -6,9 +6,10 @@ import { useFirebase } from '../utils/firebase';
 import { MobileContainer } from '../components/MobileContainer';
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
+import { ActivityIndicator } from '../components/ActivityIndicator';
 
 const Home = () => {
-  const [tweets, setTweets] = useState([]);
+  const [tweets, setTweets] = useState(undefined);
   const firestore = useFirebase('firestore');
   const userObj = {
     displayName: 'Junho Yeo',
@@ -35,7 +36,8 @@ const Home = () => {
     <MobileContainer>
       <CreateTweetForm userObj={userObj} />
       <AnimatePresence>
-        {tweets.map((tweet) => (
+        {typeof tweets === 'undefined' && <ActivityIndicator />}
+        {tweets?.map((tweet) => (
           <AnimatedListItem
             key={tweet.id}
             initial={{ opacity: 0, transform: 'translate3d(0, 64px, 0)' }}
