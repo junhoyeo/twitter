@@ -2,6 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useFirebase } from '../utils/firebase';
 import styled from 'styled-components';
 import { Modal } from './Modal';
+import Portal from './Portal';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -44,16 +45,18 @@ export const Tweet = ({ tweetObj, isOwner }) => {
           )}
         </Content>
       </Container>
-      <Modal
-        isShown={isDeleteModalOpen}
-        onDismiss={() => setDeleteModalOpen(false)}
-        title="Delete Tweet?"
-        description="This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Twitter search results."
-        buttons={[
-          { title: 'Delete', onClick: onClickDelete, destructive: true },
-          { title: 'Cancel', onClick: () => setDeleteModalOpen(false) },
-        ]}
-      />
+      <Portal>
+        <Modal
+          isShown={isDeleteModalOpen}
+          onDismiss={() => setDeleteModalOpen(false)}
+          title="Delete Tweet?"
+          description="This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Twitter search results."
+          buttons={[
+            { title: 'Delete', onClick: onClickDelete, destructive: true },
+            { title: 'Cancel', onClick: () => setDeleteModalOpen(false) },
+          ]}
+        />
+      </Portal>
     </React.Fragment>
   );
 };

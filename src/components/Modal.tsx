@@ -70,11 +70,16 @@ const Background = styled(motion.div)`
   left: 0;
   bottom: 0;
   cursor: pointer;
+  z-index: 999;
 
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: rgba(91, 112, 131, 0.4);
+
+  * {
+    user-select: none;
+  }
 `;
 const Container = styled(motion.div)`
   padding: 32px;
@@ -86,6 +91,7 @@ const Container = styled(motion.div)`
   display: flex;
   flex-direction: column;
   background-color: rgba(0, 0, 0, 1);
+  cursor: default;
 `;
 const Title = styled.span`
   margin-bottom: 8px;
