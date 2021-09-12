@@ -6,6 +6,7 @@ import Portal from './Portal';
 import HeartOutlineIcon from '../assets/heart-outline.svg';
 import HeartFilledIcon from '../assets/heart-filled.svg';
 import { motion } from 'framer-motion';
+import { MoreButton } from './MoreButton';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -34,10 +35,13 @@ export const Tweet = ({ tweetObj, isOwner }) => {
           <Avatar src="https://github.com/junhoyeo.png" alt="avatar" />
         </AvatarContainer>
         <Content>
-          <AuthorRow>
-            <DisplayName>Junho Yeo</DisplayName>
-            <Metadata>@_junhoyeo · 5h</Metadata>
-          </AuthorRow>
+          <TopRow>
+            <span>
+              <DisplayName>Junho Yeo</DisplayName>
+              <Metadata>@_junhoyeo · 5h</Metadata>
+            </span>
+            <MoreButton />
+          </TopRow>
           <Paragraph>{tweetObj.text}</Paragraph>
           {tweetObj.attachmentUrl && (
             <ImageContainer>
@@ -127,7 +131,11 @@ const Avatar = styled.img`
   box-shadow: rgb(0 0 0 / 2%) 0px 0px 2px inset;
 `;
 
-const AuthorRow = styled.span``;
+const TopRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 const DisplayName = styled.span`
   white-space: nowrap;
   line-height: 20px;
@@ -156,6 +164,7 @@ const Content = styled.div`
 
 const Paragraph = styled.p`
   margin: 0;
+  margin-right: 20px;
   position: relative;
   min-width: 0px;
   overflow-wrap: break-word;
@@ -228,8 +237,8 @@ const LikeCount = styled.span<LikeCountProps>`
 `;
 
 const HeartCircle = styled.div`
-  width: 34.7px;
-  height: 34.7px;
+  width: 34.75px;
+  height: 34.75px;
   border-radius: 50%;
   display: flex;
   align-items: center;
