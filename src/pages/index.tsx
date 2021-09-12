@@ -4,6 +4,8 @@ import { Tweet } from '../components/Tweet';
 import { CreateTweetForm } from '../components/CreateTweetForm';
 import { useFirebase } from '../utils/firebase';
 import { MobileContainer } from '../components/MobileContainer';
+import { AnimatePresence, motion } from 'framer-motion';
+import styled from 'styled-components';
 
 const Home = () => {
   const [tweets, setTweets] = useState([]);
@@ -28,20 +30,29 @@ const Home = () => {
         setTweets(tweetArray);
       });
   }, []);
+
   return (
     <MobileContainer>
       <CreateTweetForm userObj={userObj} />
-      <div style={{ marginTop: 30 }}>
+      <AnimatePresence>
         {tweets.map((tweet) => (
-          <Tweet
+          <AnimatedListItem
             key={tweet.id}
-            tweetObj={tweet}
-            isOwner={tweet.creatorId === userObj.uid}
-          />
+            initial={{ opacity: 0, transform: 'translate3d(0, 64px, 0)' }}
+            animate={{ opacity: 1, transform: 'translate3d(0, 0px, 0)' }}
+            exit={{ opacity: 0, transform: 'translate3d(0, -100px, 0)' }}
+            transition={{ ease: 'linear' }}
+          >
+            <Tweet tweetObj={tweet} isOwner={tweet.creatorId === userObj.uid} />
+          </AnimatedListItem>
         ))}
-      </div>
+      </AnimatePresence>
     </MobileContainer>
   );
 };
 
 export default Home;
+
+const AnimatedListItem = styled(motion.li)`
+  list-style-type: none;
+`;
