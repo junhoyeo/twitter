@@ -65,6 +65,10 @@ const Container = styled.div`
   padding: 12px 16px;
   display: flex;
   border-top: 1px solid rgb(47, 51, 54);
+
+  &:last-of-type {
+    border-bottom: 1px solid rgb(47, 51, 54);
+  }
 `;
 
 const AvatarContainer = styled.div`

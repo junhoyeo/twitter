@@ -49,6 +49,7 @@ const Home = () => {
           </AnimatedListItem>
         ))}
       </AnimatePresence>
+      <BottomGap />
     </MobileContainer>
   );
 };
@@ -57,4 +58,9 @@ export default Home;
 
 const AnimatedListItem = styled(motion.li)`
   list-style-type: none;
+`;
+
+const BottomGap = styled.div`
+  width: 100%;
+  height: 100px;
 `;
