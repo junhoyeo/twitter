@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useFirebase } from '../utils/firebase';
 import styled from 'styled-components';
+import { Modal } from './Modal';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
-  const firestore = firebase?.firestore();
-  const storage = firebase?.storage();
+  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
-  const onDeleteClick = async () => {
+  const onClickDelete = useCallback(async () => {
     if (!firebase) {
       return;
     }
-    const ok = window.confirm('Are you sure you want to delete this tweet?');
-    if (ok) {
-      await firestore.doc(`tweets/${tweetObj.id}`).delete();
-      await storage.refFromURL(tweetObj.attachmentUrl).delete();
-    }
-  };
+
+    await Promise.all([
+      firebase.firestore().doc(`tweets/${tweetObj.id}`).delete(),
+      firebase.storage().refFromURL(tweetObj.attachmentUrl).delete(),
+    ]);
+
+    setDeleteModalOpen(false);
+  }, []);
 
   return (
     <React.Fragment>
@@ -37,11 +39,20 @@ export const Tweet = ({ tweetObj, isOwner }) => {
           )}
           {isOwner && (
             <div className="tweet__actions">
-              <span onClick={onDeleteClick}>Trash</span>
+              <span onClick={() => setDeleteModalOpen(true)}>Trash</span>
             </div>
           )}
         </Content>
       </Container>
+      <Modal
+        isShown={isDeleteModalOpen}
+        title="Delete Tweet?"
+        description="This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from Twitter search results."
+        buttons={[
+          { title: 'Delete', onClick: onClickDelete, destructive: true },
+          { title: 'Cancel', onClick: () => setDeleteModalOpen(false) },
+        ]}
+      />
     </React.Fragment>
   );
 };
@@ -64,7 +75,6 @@ const Avatar = styled.img`
   height: 48px;
   border-radius: 50%;
 
-  outline-style: none;
   transition-property: background-color, box-shadow;
   transition-duration: 0.2s;
   border: 1px solid rgba(0, 0, 0, 0.04);
@@ -122,7 +132,6 @@ const ImageContainer = styled.div`
   border-radius: 16px;
   border: 1px solid rgb(47, 51, 54);
   overflow: hidden;
-  outline-style: none;
   width: 100%;
   padding-bottom: 56.2061%;
   position: relative;

@@ -68,6 +68,7 @@ export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
     word-break: keep-all;
+    outline-style: none;
   }
 
   body {
