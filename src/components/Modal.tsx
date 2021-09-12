@@ -76,10 +76,6 @@ const Background = styled(motion.div)`
   justify-content: center;
   align-items: center;
   background-color: rgba(91, 112, 131, 0.4);
-
-  * {
-    user-select: none;
-  }
 `;
 const Container = styled(motion.div)`
   padding: 32px;

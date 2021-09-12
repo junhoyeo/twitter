@@ -221,7 +221,6 @@ const SubmitButton = styled.button`
   transition-property: background-color, box-shadow;
   transition-duration: 0.2s;
 
-  user-select: none;
   border-radius: 48px;
   border: 1px solid rgba(0, 0, 0, 0);
   background-color: rgb(29, 155, 240);
