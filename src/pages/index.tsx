@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Tweet } from '../components/Tweet';
 import { CreateTweetForm } from '../components/CreateTweetForm';
 import { useFirebase } from '../utils/firebase';
+import { MobileContainer } from '../components/MobileContainer';
 
 const Home = () => {
   const [tweets, setTweets] = useState([]);
@@ -28,7 +29,7 @@ const Home = () => {
       });
   }, []);
   return (
-    <div className="container">
+    <MobileContainer>
       <CreateTweetForm userObj={userObj} />
       <div style={{ marginTop: 30 }}>
         {tweets.map((tweet) => (
@@ -39,7 +40,7 @@ const Home = () => {
           />
         ))}
       </div>
-    </div>
+    </MobileContainer>
   );
 };
 
