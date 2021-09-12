@@ -7,6 +7,7 @@ import { MobileContainer } from '../components/MobileContainer';
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 import { ActivityIndicator } from '../components/ActivityIndicator';
+import { NavigationBar } from '../components/NavigationBar';
 
 const Home = () => {
   const [tweets, setTweets] = useState(undefined);
@@ -33,7 +34,8 @@ const Home = () => {
   }, []);
 
   return (
-    <MobileContainer>
+    <Container>
+      <NavigationBar title="Home" />
       <CreateTweetForm userObj={userObj} />
       <AnimatePresence>
         {typeof tweets === 'undefined' && <ActivityIndicator />}
@@ -50,11 +52,19 @@ const Home = () => {
         ))}
       </AnimatePresence>
       <BottomGap />
-    </MobileContainer>
+    </Container>
   );
 };
 
 export default Home;
+
+const Container = styled(MobileContainer)`
+  & > div.container {
+    max-width: 600px;
+    border-left: 1px solid rgb(47, 51, 54);
+    border-right: 1px solid rgb(47, 51, 54);
+  }
+`;
 
 const AnimatedListItem = styled(motion.li)`
   list-style-type: none;
