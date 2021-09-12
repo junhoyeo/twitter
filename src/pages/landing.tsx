@@ -164,6 +164,7 @@ const RelativeCover = styled.div`
   display: flex;
   position: relative;
   flex: 1;
+  background-color: rgb(29, 155, 240);
 
   ${onHandset} {
     height: 45vh;
