@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { dbService } from "fbase";
-import Nweet from "components/Nweet";
-import NweetFactory from "components/NweetFactory";
+import React, { useState, useEffect } from 'react';
 
-const Home = ({ userObj }) => {
+import Nweet from '../components/Nweet';
+import NweetFactory from '../components/NweetFactory';
+import { useFirebase } from '../utils/firebase';
+
+const Home = () => {
   const [nweets, setNweets] = useState([]);
+  const firestore = useFirebase('firestore');
+  const userObj = {
+    displayName: 'Junho Yeo',
+    uid: 'test',
+  };
+
   useEffect(() => {
-    dbService
-      .collection("nweets")
-      .orderBy("createdAt", "desc")
+    if (!firestore) {
+      return;
+    }
+    firestore
+      .collection('nweets')
+      .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
         const nweetArray = snapshot.docs.map((doc) => ({
           id: doc.id,
@@ -32,4 +42,5 @@ const Home = ({ userObj }) => {
     </div>
   );
 };
+
 export default Home;

@@ -1,22 +1,30 @@
-import React, { useState } from "react";
-import { dbService, storageService } from "fbase";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import React, { useState } from 'react';
+import { useFirebase } from '../utils/firebase';
 
 const Nweet = ({ nweetObj, isOwner }) => {
   const [editing, setEditing] = useState(false);
   const [newNweet, setNewNweet] = useState(nweetObj.text);
+  const firebase = useFirebase();
+  const firestore = firebase?.firestore();
+  const storage = firebase?.storage();
+
   const onDeleteClick = async () => {
-    const ok = window.confirm("Are you sure you want to delete this nweet?");
+    if (!firebase) {
+      return;
+    }
+    const ok = window.confirm('Are you sure you want to delete this nweet?');
     if (ok) {
-      await dbService.doc(`nweets/${nweetObj.id}`).delete();
-      await storageService.refFromURL(nweetObj.attachmentUrl).delete();
+      await firestore.doc(`nweets/${nweetObj.id}`).delete();
+      await storage.refFromURL(nweetObj.attachmentUrl).delete();
     }
   };
   const toggleEditing = () => setEditing((prev) => !prev);
   const onSubmit = async (event) => {
+    if (!firestore) {
+      return;
+    }
     event.preventDefault();
-    await dbService.doc(`nweets/${nweetObj.id}`).update({
+    await firestore.doc(`nweets/${nweetObj.id}`).update({
       text: newNweet,
     });
     setEditing(false);
@@ -52,13 +60,9 @@ const Nweet = ({ nweetObj, isOwner }) => {
           <h4>{nweetObj.text}</h4>
           {nweetObj.attachmentUrl && <img src={nweetObj.attachmentUrl} />}
           {isOwner && (
-            <div class="nweet__actions">
-              <span onClick={onDeleteClick}>
-                <FontAwesomeIcon icon={faTrash} />
-              </span>
-              <span onClick={toggleEditing}>
-                <FontAwesomeIcon icon={faPencilAlt} />
-              </span>
+            <div className="nweet__actions">
+              <span onClick={onDeleteClick}>Trash</span>
+              <span onClick={toggleEditing}>Edit</span>
             </div>
           )}
         </>

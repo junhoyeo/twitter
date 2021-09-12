@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import { authService } from "fbase";
-import { useHistory } from "react-router-dom";
+import React, { useState } from 'react';
+import { authService } from '../utils/firebase';
+import { useHistory } from 'react-router-dom';
 
 export default ({ refreshUser, userObj }) => {
   const history = useHistory();
   const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
   const onLogOutClick = () => {
     authService.signOut();
-    history.push("/");
+    history.push('/');
   };
   const onChange = (event) => {
     const {

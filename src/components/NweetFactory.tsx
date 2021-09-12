@@ -1,35 +1,48 @@
-import React, { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { storageService, dbService } from "fbase";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import React, { useCallback, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
+import { useFirebase } from '../utils/firebase';
 
 const NweetFactory = ({ userObj }) => {
-  const [nweet, setNweet] = useState("");
-  const [attachment, setAttachment] = useState("");
+  const [nweet, setNweet] = useState('');
+  const [attachment, setAttachment] = useState('');
+
+  const firebase = useFirebase();
+  const storage = firebase?.storage();
+  const firestore = firebase?.firestore();
+
+  const uploadAttachment = useCallback(
+    async (attachment: string) => {
+      if (!storage) {
+        return;
+      }
+      const attachmentRef = storage.ref().child(`${userObj.uid}/${uuidv4()}`);
+      const response = await attachmentRef.putString(attachment, 'data_url');
+      const attachmentUrl = await response.ref.getDownloadURL();
+      return attachmentUrl;
+    },
+    [storage],
+  );
+
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (nweet === "") {
+    if (nweet === '') {
       return;
     }
-    let attachmentUrl = "";
-    if (attachment !== "") {
-      const attachmentRef = storageService
-        .ref()
-        .child(`${userObj.uid}/${uuidv4()}`);
-      const response = await attachmentRef.putString(attachment, "data_url");
-      attachmentUrl = await response.ref.getDownloadURL();
+    let attachmentUrl: string | undefined;
+    if (attachment !== '') {
+      attachmentUrl = await uploadAttachment(attachment);
     }
     const nweetObj = {
       text: nweet,
       createdAt: Date.now(),
       creatorId: userObj.uid,
-      attachmentUrl,
+      attachmentUrl: attachmentUrl || '',
     };
-    await dbService.collection("nweets").add(nweetObj);
-    setNweet("");
-    setAttachment("");
+    await firestore.collection('nweets').add(nweetObj);
+    setNweet('');
+    setAttachment('');
   };
+
   const onChange = (event) => {
     const {
       target: { value },
@@ -44,6 +57,8 @@ const NweetFactory = ({ userObj }) => {
     const reader = new FileReader();
     reader.onloadend = (finishedEvent) => {
       const {
+        // FIXME: proper typing
+        // @ts-ignore
         currentTarget: { result },
       } = finishedEvent;
       setAttachment(result);
@@ -52,7 +67,7 @@ const NweetFactory = ({ userObj }) => {
       reader.readAsDataURL(theFile);
     }
   };
-  const onClearAttachment = () => setAttachment("");
+  const onClearAttachment = () => setAttachment('');
   return (
     <form onSubmit={onSubmit} className="factoryForm">
       <div className="factoryInput__container">
@@ -66,9 +81,9 @@ const NweetFactory = ({ userObj }) => {
         />
         <input type="submit" value="&rarr;" className="factoryInput__arrow" />
       </div>
-      <label for="attach-file" className="factoryInput__label">
+      <label htmlFor="attach-file" className="factoryInput__label">
         <span>Add photos</span>
-        <FontAwesomeIcon icon={faPlus} />
+        Plus
       </label>
       <input
         id="attach-file"
@@ -89,7 +104,7 @@ const NweetFactory = ({ userObj }) => {
           />
           <div className="factoryForm__clear" onClick={onClearAttachment}>
             <span>Remove</span>
-            <FontAwesomeIcon icon={faTimes} />
+            Times
           </div>
         </div>
       )}
