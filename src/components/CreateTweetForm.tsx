@@ -3,10 +3,13 @@ import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 import { useFirebase } from '../utils/firebase';
 import TextareaAutosize from 'react-textarea-autosize';
+import GlobeIcon from '../assets/globe.svg';
 
 export const CreateTweetForm = ({ userObj }) => {
   const [tweet, setTweet] = useState('');
   const submitDisabled = useMemo(() => tweet.trim().length === 0, [tweet]);
+  const [isDraftInputDirty, setDraftInputDirty] = useState<boolean>(false);
+
   const [attachment, setAttachment] = useState('');
 
   const firebase = useFirebase();
@@ -81,8 +84,15 @@ export const CreateTweetForm = ({ userObj }) => {
         <Input
           value={tweet}
           onChange={onChange}
+          onFocus={() => setDraftInputDirty(true)}
           placeholder="What's happening?"
         />
+        {isDraftInputDirty && (
+          <PublicScopeNudge>
+            <BlueGlobe />
+            <span>Everyone can reply</span>
+          </PublicScopeNudge>
+        )}
         <ToolbarContainer>
           <Toolbar>
             {/* <label htmlFor="attach-file">
@@ -164,6 +174,28 @@ const Input = styled(TextareaAutosize)`
   &::placeholder {
     color: #6e767d;
   }
+`;
+
+const PublicScopeNudge = styled.div`
+  padding-top: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgb(47, 51, 54);
+
+  display: flex;
+  align-items: center;
+
+  & > span {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 16px;
+    color: rgb(29, 155, 240);
+  }
+`;
+const BlueGlobe = styled(GlobeIcon)`
+  width: 16px;
+  height: 16px;
+  margin-right: 4px;
+  fill: rgb(29, 155, 240);
 `;
 
 const ToolbarContainer = styled.div`
