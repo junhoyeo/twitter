@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useFirebase } from '../utils/firebase';
 import styled from 'styled-components';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
-  const [editing, setEditing] = useState(false);
-  const [newTweet, setNewTweet] = useState(tweetObj.text);
   const firebase = useFirebase();
   const firestore = firebase?.firestore();
   const storage = firebase?.storage();
@@ -19,68 +17,31 @@ export const Tweet = ({ tweetObj, isOwner }) => {
       await storage.refFromURL(tweetObj.attachmentUrl).delete();
     }
   };
-  const toggleEditing = () => setEditing((prev) => !prev);
-  const onSubmit = async (event) => {
-    if (!firestore) {
-      return;
-    }
-    event.preventDefault();
-    await firestore.doc(`tweets/${tweetObj.id}`).update({
-      text: newTweet,
-    });
-    setEditing(false);
-  };
-  const onChange = (event) => {
-    const {
-      target: { value },
-    } = event;
-    setNewTweet(value);
-  };
+
   return (
     <React.Fragment>
-      {editing ? (
-        <>
-          <form onSubmit={onSubmit} className="container tweetEdit">
-            <input
-              type="text"
-              placeholder="Edit your tweet"
-              value={newTweet}
-              required
-              autoFocus
-              onChange={onChange}
-              className="formInput"
-            />
-            <input type="submit" value="Update Tweet" className="formBtn" />
-          </form>
-          <span onClick={toggleEditing} className="formBtn cancelBtn">
-            Cancel
-          </span>
-        </>
-      ) : (
-        <Container>
-          <AvatarContainer>
-            <Avatar src="https://github.com/junhoyeo.png" alt="avatar" />
-          </AvatarContainer>
-          <Content>
-            <AuthorRow>
-              <DisplayName>Junho Yeo</DisplayName>
-              <Metadata>@_junhoyeo · 5h</Metadata>
-            </AuthorRow>
-            <Paragraph>{tweetObj.text}</Paragraph>
-            {tweetObj.attachmentUrl && (
-              <ImageContainer>
-                <Image src={tweetObj.attachmentUrl} />
-              </ImageContainer>
-            )}
-            {isOwner && (
-              <div className="tweet__actions">
-                <span onClick={onDeleteClick}>Trash</span>
-                <span onClick={toggleEditing}>Edit</span>
-              </div>
-            )}
-          </Content>
-        </Container>
-      )}
+      <Container>
+        <AvatarContainer>
+          <Avatar src="https://github.com/junhoyeo.png" alt="avatar" />
+        </AvatarContainer>
+        <Content>
+          <AuthorRow>
+            <DisplayName>Junho Yeo</DisplayName>
+            <Metadata>@_junhoyeo · 5h</Metadata>
+          </AuthorRow>
+          <Paragraph>{tweetObj.text}</Paragraph>
+          {tweetObj.attachmentUrl && (
+            <ImageContainer>
+              <Image src={tweetObj.attachmentUrl} />
+            </ImageContainer>
+          )}
+          {isOwner && (
+            <div className="tweet__actions">
+              <span onClick={onDeleteClick}>Trash</span>
+            </div>
+          )}
+        </Content>
+      </Container>
     </React.Fragment>
   );
 };
