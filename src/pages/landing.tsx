@@ -3,16 +3,12 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 
 import { MobileContainer } from '../components/MobileContainer';
-import {
-  onMobile,
-  onHandset,
-  useIsRelative,
-  Breakpoints,
-} from '../utils/relatives';
+import { onMobile, onHandset, Breakpoints } from '../utils/relatives';
 
 import TwitterLogoIcon from './twitter.svg';
 import { Footer } from '../components/Footer';
 import useWindowSize from '../hooks/useWindowSize';
+import { motion } from 'framer-motion';
 
 const LandingPage = () => {
   const { windowWidth, windowHeight } = useWindowSize();
@@ -38,7 +34,11 @@ const LandingPage = () => {
     <Page>
       <Container style={{ height: containerHeight }}>
         <Content>
-          <Section>
+          <Section
+            initial={{ opacity: 0, transform: 'translate3d(0, 120px, 0)' }}
+            animate={{ opacity: 1, transform: 'translate3d(0, 0px, 0)' }}
+            transition={{ type: 'spring', damping: 80, duration: 0.5 }}
+          >
             <TwitterLogo />
             <Title>
               Happening
@@ -51,7 +51,18 @@ const LandingPage = () => {
         <RelativeCover>
           <CoverImage src="/images/landing-cover.png" />
           <AbsoluteCoverContent>
-            <WhiteBlueBird />
+            <motion.div
+              animate={{ scale: 1 }}
+              transition={{
+                from: 0.95,
+                ease: 'linear',
+                duration: 1,
+                repeat: Infinity,
+                repeatType: 'mirror',
+              }}
+            >
+              <WhiteBlueBird />
+            </motion.div>
           </AbsoluteCoverContent>
         </RelativeCover>
       </Container>
@@ -119,7 +130,7 @@ const Content = styled(MobileContainer)`
   }
 `;
 
-const Section = styled.section`
+const Section = styled(motion.section)`
   width: 100%;
 `;
 
