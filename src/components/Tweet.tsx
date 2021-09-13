@@ -7,6 +7,8 @@ import HeartOutlineIcon from '../assets/heart-outline.svg';
 import HeartFilledIcon from '../assets/heart-filled.svg';
 import { motion } from 'framer-motion';
 import { MoreButton } from './MoreButton';
+import TrashIcon from '../assets/trash.svg';
+import { MenuItem } from './MenuItem';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -40,7 +42,14 @@ export const Tweet = ({ tweetObj, isOwner }) => {
               <DisplayName>Junho Yeo</DisplayName>
               <Metadata>@_junhoyeo · 5h</Metadata>
             </span>
-            <MoreButton />
+            <MoreButton>
+              <MenuItem
+                icon={<TrashIcon />}
+                title="Delete"
+                destructive
+                onClick={() => setDeleteModalOpen(true)}
+              />
+            </MoreButton>
           </TopRow>
           <Paragraph>{tweetObj.text}</Paragraph>
           {tweetObj.attachmentUrl && (
@@ -49,8 +58,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
             </ImageContainer>
           )}
           {isOwner && (
-            <div className="tweet__actions">
-              <span onClick={() => setDeleteModalOpen(true)}>Trash</span>
+            <Actions>
               <Likes>
                 <HeartCircle className="heart-circle">
                   <HeartContainer
@@ -83,7 +91,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                   123
                 </LikeCount>
               </Likes>
-            </div>
+            </Actions>
           )}
         </Content>
       </Container>
@@ -198,6 +206,7 @@ const Image = styled.img`
   object-position: center;
 `;
 
+const Actions = styled.div``;
 const Likes = styled.div`
   display: flex;
   align-items: center;

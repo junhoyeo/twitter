@@ -1,12 +1,43 @@
-import styled from 'styled-components';
+import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 import MoreIcon from '../assets/more.svg';
 
-export const MoreButton = () => {
+import { MenuList } from './MenuList';
+
+export const MoreButton: React.FC = ({ children }) => {
+  const [isMenuShown, setMenuShown] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (!isMenuShown) {
+      return;
+    }
+    const handleClick = () => setMenuShown(false);
+
+    document.addEventListener('click', handleClick, { passive: true });
+    document.addEventListener('touchstart', handleClick, { passive: true });
+
+    return () => {
+      document.removeEventListener('click', handleClick);
+      document.removeEventListener('touchstart', handleClick);
+    };
+  }, [isMenuShown]);
+
   return (
     <RelativeContainer>
-      <Circle>
+      <Circle isMenuShown={isMenuShown} onClick={() => setMenuShown(true)}>
         <BlueMore />
       </Circle>
+      {isMenuShown && (
+        <AnimateList
+          initial={{ opacity: 0, transform: 'translate3d(0, 64px, 0)' }}
+          animate={{ opacity: 1, transform: 'translate3d(0, 0px, 0)' }}
+          exit={{ opacity: 0, transform: 'translate3d(0, -100px, 0)' }}
+          transition={{ ease: 'linear' }}
+        >
+          <AbsoluteMenuList>{children}</AbsoluteMenuList>
+        </AnimateList>
+      )}
     </RelativeContainer>
   );
 };
@@ -20,7 +51,11 @@ const RelativeContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
-const Circle = styled.button`
+
+type CircleProps = {
+  isMenuShown: boolean;
+};
+const Circle = styled.button<CircleProps>`
   width: 34.75px;
   height: 34.75px;
   border-radius: 50%;
@@ -36,9 +71,13 @@ const Circle = styled.button`
   transition-duration: 0.2s;
   background-color: transparent;
 
-  &:hover {
-    background-color: rgba(29, 155, 240, 0.1);
-  }
+  ${({ isMenuShown }) =>
+    !isMenuShown &&
+    css`
+      &:hover {
+        background-color: rgba(29, 155, 240, 0.1);
+      }
+    `};
 `;
 const BlueMore = styled(MoreIcon)`
   fill: rgb(110, 118, 125);
@@ -48,4 +87,14 @@ const BlueMore = styled(MoreIcon)`
   &:hover {
     fill: rgb(29, 155, 240);
   }
+`;
+
+const AnimateList = styled(motion.div)`
+  z-index: 1;
+`;
+const AbsoluteMenuList = styled(MenuList)`
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  z-index: 999;
 `;
