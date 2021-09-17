@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useFirebase } from '../utils/firebase';
 import styled, { css } from 'styled-components';
 import { Modal } from './Modal';
@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { MoreButton } from './MoreButton';
 import TrashIcon from '../assets/trash.svg';
 import { MenuItem } from './MenuItem';
+import { firestore } from 'firebase';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -16,7 +17,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
 
   const [heartAnimationState, setHeartAnimationState] = useState<
     'UNDETERMINED' | 'ANIMATED' | 'LIKED'
-  >('UNDETERMINED');
+  >(!tweetObj.likes?.includes('test') ? 'UNDETERMINED' : 'LIKED');
 
   const onClickDelete = useCallback(async () => {
     if (!firebase) {
@@ -69,7 +70,25 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                         !isUndetermined ? 'UNDETERMINED' : 'ANIMATED',
                       );
                       if (isUndetermined) {
+                        firebase
+                          .firestore()
+                          .collection('tweets')
+                          .doc(tweetObj.id)
+                          .update({
+                            likes: [...(tweetObj.likes || []), 'test'],
+                          });
                         setTimeout(() => setHeartAnimationState('LIKED'), 500);
+                      } else {
+                        firebase
+                          .firestore()
+                          .collection('tweets')
+                          .doc(tweetObj.id)
+                          .update({
+                            likes:
+                              tweetObj.likes?.filter(
+                                (userId) => userId !== 'test',
+                              ) || [],
+                          });
                       }
                     }}
                   >

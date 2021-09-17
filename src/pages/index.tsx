@@ -59,6 +59,8 @@ const Home = () => {
 export default Home;
 
 const Container = styled(MobileContainer)`
+  min-height: 100vh;
+
   & > div.container {
     max-width: 600px;
     border-left: 1px solid rgb(47, 51, 54);
