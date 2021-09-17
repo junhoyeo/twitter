@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import MoreIcon from '../assets/more.svg';
 
@@ -12,7 +12,13 @@ export const MoreButton: React.FC = ({ children }) => {
     if (!isMenuShown) {
       return;
     }
-    const handleClick = () => setMenuShown(false);
+    const handleClick = (event: MouseEvent) => {
+      const clickedElement = event.target as HTMLElement;
+      if (clickedElement.className.includes('menu-item')) {
+        return;
+      }
+      setMenuShown(false);
+    };
 
     document.addEventListener('click', handleClick, { passive: true });
     document.addEventListener('touchstart', handleClick, { passive: true });

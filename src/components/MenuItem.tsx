@@ -16,7 +16,11 @@ export const MenuItem: React.FC<MenuItemProps> = ({
   onClick,
 }) => {
   return (
-    <Container onClick={onClick} destructive={destructive}>
+    <Container
+      className="menu-item"
+      onClick={onClick}
+      destructive={destructive}
+    >
       {icon}
       <Title destructive={destructive}>{title}</Title>
     </Container>
