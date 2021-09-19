@@ -59,6 +59,7 @@ export const SideMenu = () => {
               );
             })}
           </SidemenuList>
+          <TweetButton type="button">Tweet</TweetButton>
         </Sticky>
       </Container>
     </Wrapper>
@@ -106,5 +107,34 @@ const TwitterLogo = styled(TwitterLogoIcon)`
 const SidemenuList = styled.ul`
   margin: 0;
   margin-top: 2px;
+  margin-bottom: 4px;
   padding: 0;
+`;
+
+const TweetButton = styled.button`
+  margin-bottom: 16px;
+  margin-top: 16px;
+  padding: 0 32px;
+
+  width: 90%;
+  min-width: 52px;
+  min-height: 52px;
+
+  background-color: rgb(29, 155, 240);
+  box-shadow: rgb(0 0 0 / 8%) 0px 8px 28px;
+  outline-style: none;
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+
+  font-weight: 700;
+  font-size: 17px;
+  line-height: 20px;
+  color: rgb(255, 255, 255);
+
+  border: 1px solid black;
+  border-radius: 45px;
+
+  &:hover {
+    background-color: rgb(26, 140, 216);
+  }
 `;

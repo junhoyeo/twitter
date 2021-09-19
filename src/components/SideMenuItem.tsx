@@ -36,7 +36,7 @@ const Container = styled.li<ContainerProps>`
   min-width: 100%;
   margin-left: auto;
   border-radius: 36px;
-  padding: 12px;
+  padding: 16px 12px;
   cursor: pointer;
   transition: all 0.2s ease-in-out;
 
