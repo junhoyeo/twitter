@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+
 import MoreIcon from '../assets/more.svg';
 
 import { MenuList } from './MenuList';

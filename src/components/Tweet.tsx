@@ -1,15 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { useFirebase } from '../utils/firebase';
-import styled, { css } from 'styled-components';
-import { Modal } from './Modal';
-import Portal from './Portal';
-import HeartOutlineIcon from '../assets/heart-outline.svg';
-import HeartFilledIcon from '../assets/heart-filled.svg';
-import { motion } from 'framer-motion';
-import { MoreButton } from './MoreButton';
-import TrashIcon from '../assets/trash.svg';
-import { MenuItem } from './MenuItem';
 import { firestore } from 'firebase';
+import { motion } from 'framer-motion';
+import React, { useCallback, useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+
+import HeartFilledIcon from '../assets/heart-filled.svg';
+import HeartOutlineIcon from '../assets/heart-outline.svg';
+import TrashIcon from '../assets/trash.svg';
+
+import { useFirebase } from '../utils/firebase';
+
+import { MenuItem } from './MenuItem';
+import { Modal } from './Modal';
+import { MoreButton } from './MoreButton';
+import Portal from './Portal';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();

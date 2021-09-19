@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+
 import { SideMenu } from './SideMenu';
 
 export const Layout: React.FC = ({ children }) => {

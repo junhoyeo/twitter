@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
-
-import { Tweet } from '../components/Tweet';
-import { CreateTweetForm } from '../components/CreateTweetForm';
-import { useFirebase } from '../utils/firebase';
-
 import { AnimatePresence, motion } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { ActivityIndicator } from '../components/ActivityIndicator';
-import { NavigationBar } from '../components/NavigationBar';
+
 import ShineOutlineIcon from '../assets/shine-outline.svg';
+
+import { ActivityIndicator } from '../components/ActivityIndicator';
+import { CreateTweetForm } from '../components/CreateTweetForm';
 import { Layout } from '../components/Layout';
+import { NavigationBar } from '../components/NavigationBar';
+import { Tweet } from '../components/Tweet';
+
+import { useFirebase } from '../utils/firebase';
 
 const Home = () => {
   const [tweets, setTweets] = useState(undefined);

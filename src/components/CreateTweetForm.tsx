@@ -1,9 +1,11 @@
 import React, { useCallback, useMemo, useState } from 'react';
+import TextareaAutosize from 'react-textarea-autosize';
 import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { useFirebase } from '../utils/firebase';
-import TextareaAutosize from 'react-textarea-autosize';
+
 import GlobeIcon from '../assets/globe.svg';
+
+import { useFirebase } from '../utils/firebase';
 
 export const CreateTweetForm = ({ userObj }) => {
   const [tweet, setTweet] = useState('');

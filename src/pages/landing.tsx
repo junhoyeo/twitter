@@ -1,14 +1,16 @@
+import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import dynamic from 'next/dynamic';
 
+import { Footer } from '../components/Footer';
 import { MobileContainer } from '../components/MobileContainer';
-import { onMobile, onHandset, Breakpoints } from '../utils/relatives';
+
+import useWindowSize from '../hooks/useWindowSize';
+
+import { Breakpoints, onHandset, onMobile } from '../utils/relatives';
 
 import TwitterLogoIcon from './twitter.svg';
-import { Footer } from '../components/Footer';
-import useWindowSize from '../hooks/useWindowSize';
-import { motion } from 'framer-motion';
 
 const LandingPage = () => {
   const { windowWidth, windowHeight } = useWindowSize();
