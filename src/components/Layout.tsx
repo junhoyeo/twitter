@@ -29,6 +29,10 @@ const MainWrapper = styled.div`
   flex-shrink: 1;
   flex-grow: 1;
   align-items: flex-start;
+
+  @media (max-width: 600px) {
+    width: -webkit-fill-available;
+  }
 `;
 const MainContainer = styled.div`
   width: 990px;
