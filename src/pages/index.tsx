@@ -8,7 +8,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 import { ActivityIndicator } from '../components/ActivityIndicator';
 import { NavigationBar } from '../components/NavigationBar';
-
+import ShineOutlineIcon from '../assets/shine-outline.svg';
 import { Layout } from '../components/Layout';
 
 const Home = () => {
@@ -37,7 +37,11 @@ const Home = () => {
 
   return (
     <Layout>
-      <NavigationBar title="Home" />
+      <NavigationBar title="Home">
+        <ShineButton>
+          <ShineIcon />
+        </ShineButton>
+      </NavigationBar>
       <CreateTweetForm userObj={userObj} />
       <AnimatePresence>
         {typeof tweets === 'undefined' && <ActivityIndicator />}
@@ -68,6 +72,22 @@ const Home = () => {
 };
 
 export default Home;
+
+const ShineButton = styled.div`
+  margin-right: -7px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+const ShineIcon = styled(ShineOutlineIcon)`
+  fill: rgb(239, 243, 244);
+  width: 20px;
+  height: 20px;
+`;
 
 const AnimatedListItem = styled(motion.li)`
   list-style-type: none;

@@ -2,10 +2,19 @@ import styled from 'styled-components';
 
 type NavigationBarProps = {
   title?: string;
+  children?: React.ReactNode;
 };
 
-export const NavigationBar: React.FC<NavigationBarProps> = ({ title }) => {
-  return <Container>{title && <Title>{title}</Title>}</Container>;
+export const NavigationBar: React.FC<NavigationBarProps> = ({
+  title,
+  children,
+}) => {
+  return (
+    <Container>
+      {title && <Title>{title}</Title>}
+      {children}
+    </Container>
+  );
 };
 
 const Container = styled.div`
