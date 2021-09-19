@@ -47,17 +47,19 @@ export const SideMenu = () => {
   return (
     <Wrapper>
       <Container>
-        <TwitterLogoContainer>
-          <TwitterLogo />
-        </TwitterLogoContainer>
-        <SidemenuList>
-          {sideMenuItems.map((props) => {
-            const selected = pathname === props.path;
-            return (
-              <SideMenuItem key={props.path} selected={selected} {...props} />
-            );
-          })}
-        </SidemenuList>
+        <Sticky>
+          <TwitterLogoContainer>
+            <TwitterLogo />
+          </TwitterLogoContainer>
+          <SidemenuList>
+            {sideMenuItems.map((props) => {
+              const selected = pathname === props.path;
+              return (
+                <SideMenuItem key={props.path} selected={selected} {...props} />
+              );
+            })}
+          </SidemenuList>
+        </Sticky>
       </Container>
     </Wrapper>
   );
@@ -69,7 +71,7 @@ const Wrapper = styled.header`
   display: flex;
 `;
 
-const Container = styled.div`
+const Sticky = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -84,6 +86,8 @@ const Container = styled.div`
     width: fit-content;
   }
 `;
+
+const Container = styled.div``;
 
 const TwitterLogoContainer = styled.div`
   width: 52px;
