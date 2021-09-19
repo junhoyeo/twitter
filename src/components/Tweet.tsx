@@ -107,7 +107,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                   className="like-count"
                   liked={heartAnimationState !== 'UNDETERMINED'}
                 >
-                  123
+                  {tweetObj.likes?.length || 0}
                 </LikeCount>
               </Likes>
             </Actions>
@@ -229,6 +229,7 @@ const Actions = styled.div``;
 const Likes = styled.div`
   display: flex;
   align-items: center;
+  width: fit-content;
 
   &:hover {
     & > .heart-circle {
