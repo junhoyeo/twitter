@@ -3,8 +3,8 @@ import { motion } from 'framer-motion';
 import React, { useCallback, useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import HeartFilledIcon from '../assets/heart-filled.svg';
 import HeartOutlineIcon from '../assets/heart-outline.svg';
+import HeartFilledIcon from '../assets/heart-solid.svg';
 import TrashIcon from '../assets/trash.svg';
 
 import { useFirebase } from '../utils/firebase';
