@@ -3,11 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Tweet } from '../components/Tweet';
 import { CreateTweetForm } from '../components/CreateTweetForm';
 import { useFirebase } from '../utils/firebase';
-import { MobileContainer } from '../components/MobileContainer';
+
 import { AnimatePresence, motion } from 'framer-motion';
 import styled from 'styled-components';
 import { ActivityIndicator } from '../components/ActivityIndicator';
 import { NavigationBar } from '../components/NavigationBar';
+
+import { Layout } from '../components/Layout';
 
 const Home = () => {
   const [tweets, setTweets] = useState(undefined);
@@ -34,7 +36,7 @@ const Home = () => {
   }, []);
 
   return (
-    <Container>
+    <Layout>
       <NavigationBar title="Home" />
       <CreateTweetForm userObj={userObj} />
       <AnimatePresence>
@@ -42,9 +44,18 @@ const Home = () => {
         {tweets?.map((tweet) => (
           <AnimatedListItem
             key={tweet.id}
-            initial={{ opacity: 0, transform: 'translate3d(0, 64px, 0)' }}
-            animate={{ opacity: 1, transform: 'translate3d(0, 0px, 0)' }}
-            exit={{ opacity: 0, transform: 'translate3d(0, -100px, 0)' }}
+            initial={{
+              opacity: 0,
+              transform: 'translate3d(0, 64px, 0)',
+            }}
+            animate={{
+              opacity: 1,
+              transform: 'translate3d(0, 0px, 0)',
+            }}
+            exit={{
+              opacity: 0,
+              transform: 'translate3d(0, -100px, 0)',
+            }}
             transition={{ ease: 'linear' }}
           >
             <Tweet tweetObj={tweet} isOwner={tweet.creatorId === userObj.uid} />
@@ -52,21 +63,11 @@ const Home = () => {
         ))}
       </AnimatePresence>
       <BottomGap />
-    </Container>
+    </Layout>
   );
 };
 
 export default Home;
-
-const Container = styled(MobileContainer)`
-  min-height: 100vh;
-
-  & > div.container {
-    max-width: 600px;
-    border-left: 1px solid rgb(47, 51, 54);
-    border-right: 1px solid rgb(47, 51, 54);
-  }
-`;
 
 const AnimatedListItem = styled(motion.li)`
   list-style-type: none;
