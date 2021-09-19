@@ -1,0 +1,38 @@
+{
+  "importSorter.generalConfiguration.exclude": [".*\\.d\\.ts"],
+  "importSorter.importStringConfiguration.tabSize": 2,
+  "importSorter.importStringConfiguration.hasSemicolon": true,
+  "importSorter.generalConfiguration.sortOnBeforeSave": true,
+  "importSorter.sortConfiguration.customOrderingRules.rules": [
+    {
+      "type": "importMember",
+      "regex": "^$",
+      "orderLevel": 10,
+      "disableSort": true
+    },
+    {
+      "regex": "^\\../assets",
+      "orderLevel": 30
+    },
+    {
+      "regex": "^\\../components",
+      "orderLevel": 40
+    },
+    {
+      "regex": "^\\../hooks",
+      "orderLevel": 50
+    },
+    {
+      "regex": "^\\../utils",
+      "orderLevel": 60
+    },
+    {
+      "regex": "^\\../pages",
+      "orderLevel": 70
+    },
+    {
+      "regex": "^\\.",
+      "orderLevel": 80
+    }
+  ]
+}
