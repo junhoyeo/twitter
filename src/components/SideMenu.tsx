@@ -10,8 +10,7 @@ import HomeOutlineIcon from '../assets/sidemenu/home-outline.svg';
 import HomeSolidIcon from '../assets/sidemenu/home-solid.svg';
 import ProfileOutlineIcon from '../assets/sidemenu/profile-outline.svg';
 import ProfileSolidIcon from '../assets/sidemenu/profile-solid.svg';
-
-import TwitterLogoIcon from '../pages/twitter.svg';
+import TwitterLogoIcon from '../assets/twitter.svg';
 
 import { SideMenuItem } from './SideMenuItem';
 

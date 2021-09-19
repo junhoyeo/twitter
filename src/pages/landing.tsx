@@ -3,14 +3,14 @@ import dynamic from 'next/dynamic';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import TwitterLogoIcon from '../assets/twitter.svg';
+
 import { Footer } from '../components/Footer';
 import { MobileContainer } from '../components/MobileContainer';
 
 import useWindowSize from '../hooks/useWindowSize';
 
 import { Breakpoints, onHandset, onMobile } from '../utils/relatives';
-
-import TwitterLogoIcon from './twitter.svg';
 
 const LandingPage = () => {
   const { windowWidth, windowHeight } = useWindowSize();
