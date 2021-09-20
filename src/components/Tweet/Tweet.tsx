@@ -10,6 +10,8 @@ import { MenuItem } from '../MenuItem';
 import { Modal } from '../Modal';
 import { MoreButton } from '../MoreButton';
 import Portal from '../Portal';
+import { ActionCircle, ActionItem } from './Actions';
+import { ExportButton } from './ExportButton';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -84,7 +86,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
           {isOwner && (
             <Actions>
               <Likes>
-                <HeartCircle className="heart-circle">
+                <ActionCircle className="heart-circle">
                   <HeartContainer onClick={onClickLike}>
                     <HeartCenter>
                       {heartAnimationState === 'UNDETERMINED' ? (
@@ -96,7 +98,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                       )}
                     </HeartCenter>
                   </HeartContainer>
-                </HeartCircle>
+                </ActionCircle>
                 <LikeCount
                   className="like-count"
                   liked={heartAnimationState !== 'UNDETERMINED'}
@@ -104,6 +106,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                   {tweetObj.likes?.length || 0}
                 </LikeCount>
               </Likes>
+              <ExportButton />
             </Actions>
           )}
         </Content>
@@ -215,12 +218,11 @@ const Image = styled.img`
   object-position: center;
 `;
 
-const Actions = styled.div``;
-const Likes = styled.div`
+const Actions = styled.div`
   display: flex;
-  align-items: center;
-  width: fit-content;
-
+  justify-content: space-between;
+`;
+const Likes = styled(ActionItem)`
   &:hover {
     & > .heart-circle {
       background-color: rgba(249, 24, 128, 0.1);
@@ -255,19 +257,7 @@ const LikeCount = styled.span<LikeCountProps>`
     `};
 `;
 
-const HeartCircle = styled.div`
-  width: 34.75px;
-  height: 34.75px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  transition-property: background-color, box-shadow;
-  transition-duration: 0.2s;
-`;
 const HeartContainer = styled.div`
-  cursor: pointer;
   width: 20px;
   height: 20px;
   position: relative;

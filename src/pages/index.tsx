@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import ShineOutlineIcon from '../assets/shine-outline.svg';
@@ -19,6 +19,8 @@ const Home = () => {
     displayName: 'Junho Yeo',
     uid: 'test',
   };
+
+  const animatedTweetRefs = useRef<HTMLLIElement[]>([]);
 
   useEffect(() => {
     if (!firestore) {
@@ -46,26 +48,44 @@ const Home = () => {
       <CreateTweetForm userObj={userObj} />
       <AnimatePresence>
         {typeof tweets === 'undefined' && <ActivityIndicator />}
-        {tweets?.map((tweet) => (
-          <AnimatedListItem
-            key={tweet.id}
-            initial={{
-              opacity: 0,
-              transform: 'translate3d(0, 64px, 0)',
-            }}
-            animate={{
-              opacity: 1,
-              transform: 'translate3d(0, 0px, 0)',
-            }}
-            exit={{
-              opacity: 0,
-              transform: 'translate3d(0, -100px, 0)',
-            }}
-            transition={{ ease: 'linear' }}
-          >
-            <Tweet tweetObj={tweet} isOwner={tweet.creatorId === userObj.uid} />
-          </AnimatedListItem>
-        ))}
+        {tweets?.map((tweet, index: number) => {
+          return (
+            <AnimatedListItem
+              key={tweet.id}
+              ref={(ref) => {
+                animatedTweetRefs.current[index] = ref;
+              }}
+              initial={{
+                opacity: 0,
+                transform: 'translate3d(0, 64px, 0)',
+              }}
+              animate={{
+                opacity: 1,
+                transform: 'translate3d(0, 0px, 0)',
+              }}
+              exit={{
+                opacity: 0,
+                transform: 'translate3d(0, -100px, 0)',
+              }}
+              transition={{ ease: 'linear' }}
+              onAnimationComplete={() => {
+                setTimeout(() =>
+                  animatedTweetRefs.current.map((element) => {
+                    if (!element) {
+                      return;
+                    }
+                    element.style.transform = 'none';
+                  }),
+                );
+              }}
+            >
+              <Tweet
+                tweetObj={tweet}
+                isOwner={tweet.creatorId === userObj.uid}
+              />
+            </AnimatedListItem>
+          );
+        })}
       </AnimatePresence>
       <BottomGap />
     </Layout>

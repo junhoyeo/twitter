@@ -15,7 +15,7 @@ export const MoreButton: React.FC = ({ children }) => {
     }
     const handleClick = (event: MouseEvent) => {
       const clickedElement = event.target as HTMLElement;
-      if (clickedElement.className.includes('menu-item')) {
+      if (clickedElement.className?.includes?.('menu-item')) {
         return;
       }
       setMenuShown(false);
@@ -98,6 +98,7 @@ const BlueMore = styled(MoreIcon)`
 
 const AnimateList = styled(motion.div)`
   z-index: 1;
+  position: relative;
 `;
 const AbsoluteMenuList = styled(MenuList)`
   position: absolute;
