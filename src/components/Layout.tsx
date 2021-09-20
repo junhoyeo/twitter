@@ -44,7 +44,7 @@ const MainContainer = styled.div`
   justify-content: space-between;
   align-items: stretch;
 
-  ${onMobile} {
+  @media (max-width: 990px) {
     width: 100%;
   }
 `;
@@ -76,7 +76,7 @@ const RightContent = styled.div`
   margin-right: 10px;
   width: 350px;
 
-  ${onMobile} {
+  @media (max-width: 990px) {
     display: none;
   }
 `;
