@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { onMobile } from '../../utils/relatives';
+import { RightSideBar } from './RightSideBar';
 import { SideMenu } from './SideMenu';
 
 export const Layout: React.FC = ({ children }) => {
@@ -11,7 +12,7 @@ export const Layout: React.FC = ({ children }) => {
         <MainContainer>
           <Main>
             <Container>{children}</Container>
-            <RightContent />
+            <SideBar />
           </Main>
         </MainContainer>
       </MainWrapper>
@@ -71,7 +72,7 @@ const Container = styled.div`
   }
 `;
 
-const RightContent = styled.div`
+const SideBar = styled(RightSideBar)`
   margin-right: 10px;
   width: 350px;
 

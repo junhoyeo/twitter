@@ -5,7 +5,9 @@ import styled, { css } from 'styled-components';
 import MoreIcon from '../../assets/more.svg';
 import { MenuList } from '../MenuList';
 
-export const MoreButton: React.FC = ({ children }) => {
+type Props = React.HTMLAttributes<HTMLDivElement>;
+
+export const MoreButton: React.FC<Props> = ({ children, ...props }) => {
   const [isMenuShown, setMenuShown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -30,7 +32,7 @@ export const MoreButton: React.FC = ({ children }) => {
   }, [isMenuShown]);
 
   return (
-    <RelativeContainer>
+    <RelativeContainer {...props}>
       <Circle isMenuShown={isMenuShown} onClick={() => setMenuShown(true)}>
         <BlueMore />
       </Circle>
