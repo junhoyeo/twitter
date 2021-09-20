@@ -8,10 +8,10 @@ import TrashIcon from '../../assets/trash.svg';
 import { useFirebase } from '../../utils/firebase';
 import { MenuItem } from '../MenuItem';
 import { Modal } from '../Modal';
-import { MoreButton } from '../MoreButton';
 import Portal from '../Portal';
 import { ActionCircle, ActionItem } from './Actions';
 import { ExportButton } from './ExportButton';
+import { MoreButton } from './MoreButton';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
