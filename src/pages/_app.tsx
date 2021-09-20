@@ -1,4 +1,5 @@
 import React from 'react';
+import { RecoilRoot } from 'recoil';
 
 import { GlobalStyle } from '../components/GlobalStyle';
 
@@ -6,7 +7,9 @@ function MyApp({ Component, pageProps }) {
   return (
     <React.Fragment>
       <GlobalStyle />
-      <Component {...pageProps} />
+      <RecoilRoot>
+        <Component {...pageProps} />
+      </RecoilRoot>
       <div id="portal" />
     </React.Fragment>
   );

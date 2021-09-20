@@ -84,5 +84,7 @@ const AbsoluteMenuList = styled(MenuList)`
   top: 0;
   right: 0;
   z-index: 999;
-  width: 230px;
+  width: max-content;
+  min-width: 230px;
+  max-width: 274px;
 `;

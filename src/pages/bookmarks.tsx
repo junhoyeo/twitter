@@ -1,26 +1,48 @@
+import dynamic from 'next/dynamic';
 import React from 'react';
+import { useRecoilValueLoadable } from 'recoil';
 import styled from 'styled-components';
 
 import { Layout } from '../components/Layout';
 import { NavigationBar } from '../components/NavigationBar';
+import { Tweet } from '../components/Tweet';
+
+import { bookmarksAtom } from '../recoil/bookmarks';
 
 const BookmarksPage = () => {
+  const bookmarks = useRecoilValueLoadable(bookmarksAtom);
+  const userObj = {
+    displayName: 'Junho Yeo',
+    uid: 'test',
+  };
+
   return (
     <Layout>
       <NavigationBar title="Bookmarks" subtitle="@_junhoyeo" />
-      <EmptyMessage />
+      {bookmarks.state !== 'loading' && bookmarks.contents.length === 0 && (
+        <EmptyMessage />
+      )}
+      {bookmarks.contents?.map((tweet) => (
+        <Tweet
+          key={tweet.id}
+          tweetObj={tweet}
+          isOwner={tweet.creatorId === userObj.uid}
+        />
+      ))}
     </Layout>
   );
 };
 
 export default BookmarksPage;
 
-const EmptyMessage = () => (
+const _EmptyMessage = () => (
   <EmptyMessageContainer>
     <EmptyTitle>You haven’t added any Tweets to your Bookmarks yet</EmptyTitle>
     <EmptyDescription>When you do, they’ll show up here.</EmptyDescription>
   </EmptyMessageContainer>
 );
+const EmptyMessage = dynamic(async () => _EmptyMessage, { ssr: false });
+
 const EmptyMessageContainer = styled.div`
   margin: 32px auto;
   padding: 0 32px;

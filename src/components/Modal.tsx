@@ -47,11 +47,17 @@ export const Modal: React.FC<ModalProps> = ({
             <ButtonList>
               {buttons.map(({ title, onClick, destructive }) =>
                 !destructive ? (
-                  <CancelButton onClick={withoutPropagation(onClick)}>
+                  <CancelButton
+                    key={title}
+                    onClick={withoutPropagation(onClick)}
+                  >
                     {title}
                   </CancelButton>
                 ) : (
-                  <DeleteButton onClick={withoutPropagation(onClick)}>
+                  <DeleteButton
+                    key={title}
+                    onClick={withoutPropagation(onClick)}
+                  >
                     {title}
                   </DeleteButton>
                 ),

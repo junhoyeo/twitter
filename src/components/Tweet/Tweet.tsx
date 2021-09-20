@@ -1,11 +1,14 @@
 import { motion } from 'framer-motion';
+import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
+import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
 import AddBookmarkIcon from '../../assets/add-bookmark.svg';
 import HeartOutlineIcon from '../../assets/heart-outline.svg';
 import HeartFilledIcon from '../../assets/heart-solid.svg';
 import TrashIcon from '../../assets/trash.svg';
+import { bookmarksAtom } from '../../recoil/bookmarks';
 import { useFirebase } from '../../utils/firebase';
 import { MenuItem } from '../MenuItem';
 import { Modal } from '../Modal';
@@ -22,6 +25,10 @@ export const Tweet = ({ tweetObj, isOwner }) => {
     'UNDETERMINED' | 'ANIMATED' | 'LIKED'
   >(!tweetObj.likes?.includes('test') ? 'UNDETERMINED' : 'LIKED');
 
+  const [bookmarks, setBookmarks] = useRecoilState(bookmarksAtom);
+  const isBookmarked =
+    bookmarks.findIndex((bookmarked) => bookmarked.id === tweetObj.id) !== -1;
+
   const onClickLike = () => {
     const isUndetermined = heartAnimationState === 'UNDETERMINED';
     setHeartAnimationState(!isUndetermined ? 'UNDETERMINED' : 'ANIMATED');
@@ -33,6 +40,16 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         .update({
           likes: [...(tweetObj.likes || []), 'test'],
         });
+      setBookmarks((bookmarksToUpdate) =>
+        bookmarksToUpdate.map((bookmarkedTweet) =>
+          bookmarkedTweet.id !== tweetObj.id
+            ? bookmarkedTweet
+            : {
+                ...bookmarkedTweet,
+                likes: [...(bookmarkedTweet.likes || []), 'test'],
+              },
+        ),
+      );
       setTimeout(() => setHeartAnimationState('LIKED'), 500);
     } else {
       firebase
@@ -42,6 +59,19 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         .update({
           likes: tweetObj.likes?.filter((userId) => userId !== 'test') || [],
         });
+      setBookmarks((bookmarksToUpdate) =>
+        bookmarksToUpdate.map((bookmarkedTweet) =>
+          bookmarkedTweet.id !== tweetObj.id
+            ? bookmarkedTweet
+            : {
+                ...bookmarkedTweet,
+                likes:
+                  bookmarkedTweet.likes?.filter(
+                    (userId) => userId !== 'test',
+                  ) || [],
+              },
+        ),
+      );
     }
   };
 
@@ -52,8 +82,21 @@ export const Tweet = ({ tweetObj, isOwner }) => {
 
     setDeleteModalOpen(false);
     setTimeout(() => {
-      firebase.firestore().doc(`tweets/${tweetObj.id}`).delete();
-      firebase.storage().refFromURL(tweetObj.attachmentUrl).delete();
+      setBookmarks((bookmarksToUpdate) =>
+        bookmarksToUpdate.filter(
+          (bookmarkedTweet) => bookmarkedTweet.id !== tweetObj.id,
+        ),
+      );
+      firebase
+        .firestore()
+        .doc(`tweets/${tweetObj.id}`)
+        .delete()
+        .catch(() => {});
+      firebase
+        .storage()
+        .refFromURL(tweetObj.attachmentUrl)
+        .delete()
+        .catch(() => {});
     }, 200);
   }, []);
 
@@ -110,8 +153,21 @@ export const Tweet = ({ tweetObj, isOwner }) => {
               <ExportButton>
                 <MenuItem
                   icon={<AddBookmarkIcon />}
-                  title="Add Tweet to Bookmarks"
-                  onClick={() => {}}
+                  title={
+                    !isBookmarked
+                      ? 'Add Tweet to Bookmarks'
+                      : 'Remove Tweet from Bookmarks'
+                  }
+                  onClick={() => {
+                    !isBookmarked
+                      ? setBookmarks([...bookmarks, tweetObj])
+                      : setBookmarks(
+                          bookmarks.filter(
+                            (bookmarkedTweet) =>
+                              bookmarkedTweet.id !== tweetObj.id,
+                          ),
+                        );
+                  }}
                 />
               </ExportButton>
             </Actions>
@@ -134,12 +190,13 @@ export const Tweet = ({ tweetObj, isOwner }) => {
   );
 };
 
-const Container = styled.div`
+const _Container = styled.div`
   width: 100%;
   padding: 12px 16px;
   display: flex;
   border-bottom: 1px solid rgb(47, 51, 54);
 `;
+const Container = dynamic(async () => _Container, { ssr: false });
 
 const AvatarContainer = styled.div`
   margin-right: 12px;
