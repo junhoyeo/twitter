@@ -37,6 +37,8 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: rgb(0 0 0 / 2%) 0px 0px 2px inset;
+  background-color: black;
+  background-color: black;
 `;
 
 const DisplayName = styled.h2`

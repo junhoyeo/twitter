@@ -213,6 +213,7 @@ const Avatar = styled.img`
   transition-duration: 0.2s;
   border: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow: rgb(0 0 0 / 2%) 0px 0px 2px inset;
+  background-color: black;
 `;
 
 const TopRow = styled.div`
@@ -280,6 +281,7 @@ const Image = styled.img`
   bottom: 0;
   object-fit: cover;
   object-position: center;
+  background-color: black;
 `;
 
 const Actions = styled.div`

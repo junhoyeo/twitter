@@ -149,6 +149,7 @@ const Avatar = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  background-color: black;
 
   transition-property: background-color, box-shadow;
   transition-duration: 0.2s;
