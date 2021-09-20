@@ -1,18 +1,15 @@
-import { firestore } from 'firebase';
 import { motion } from 'framer-motion';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 
-import HeartOutlineIcon from '../assets/heart-outline.svg';
-import HeartFilledIcon from '../assets/heart-solid.svg';
-import TrashIcon from '../assets/trash.svg';
-
-import { useFirebase } from '../utils/firebase';
-
-import { MenuItem } from './MenuItem';
-import { Modal } from './Modal';
-import { MoreButton } from './MoreButton';
-import Portal from './Portal';
+import HeartOutlineIcon from '../../assets/heart-outline.svg';
+import HeartFilledIcon from '../../assets/heart-solid.svg';
+import TrashIcon from '../../assets/trash.svg';
+import { useFirebase } from '../../utils/firebase';
+import { MenuItem } from '../MenuItem';
+import { Modal } from '../Modal';
+import { MoreButton } from '../MoreButton';
+import Portal from '../Portal';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -21,6 +18,29 @@ export const Tweet = ({ tweetObj, isOwner }) => {
   const [heartAnimationState, setHeartAnimationState] = useState<
     'UNDETERMINED' | 'ANIMATED' | 'LIKED'
   >(!tweetObj.likes?.includes('test') ? 'UNDETERMINED' : 'LIKED');
+
+  const onClickLike = () => {
+    const isUndetermined = heartAnimationState === 'UNDETERMINED';
+    setHeartAnimationState(!isUndetermined ? 'UNDETERMINED' : 'ANIMATED');
+    if (isUndetermined) {
+      firebase
+        .firestore()
+        .collection('tweets')
+        .doc(tweetObj.id)
+        .update({
+          likes: [...(tweetObj.likes || []), 'test'],
+        });
+      setTimeout(() => setHeartAnimationState('LIKED'), 500);
+    } else {
+      firebase
+        .firestore()
+        .collection('tweets')
+        .doc(tweetObj.id)
+        .update({
+          likes: tweetObj.likes?.filter((userId) => userId !== 'test') || [],
+        });
+    }
+  };
 
   const onClickDelete = useCallback(async () => {
     if (!firebase) {
@@ -65,36 +85,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
             <Actions>
               <Likes>
                 <HeartCircle className="heart-circle">
-                  <HeartContainer
-                    onClick={() => {
-                      const isUndetermined =
-                        heartAnimationState === 'UNDETERMINED';
-                      setHeartAnimationState(
-                        !isUndetermined ? 'UNDETERMINED' : 'ANIMATED',
-                      );
-                      if (isUndetermined) {
-                        firebase
-                          .firestore()
-                          .collection('tweets')
-                          .doc(tweetObj.id)
-                          .update({
-                            likes: [...(tweetObj.likes || []), 'test'],
-                          });
-                        setTimeout(() => setHeartAnimationState('LIKED'), 500);
-                      } else {
-                        firebase
-                          .firestore()
-                          .collection('tweets')
-                          .doc(tweetObj.id)
-                          .update({
-                            likes:
-                              tweetObj.likes?.filter(
-                                (userId) => userId !== 'test',
-                              ) || [],
-                          });
-                      }
-                    }}
-                  >
+                  <HeartContainer onClick={onClickLike}>
                     <HeartCenter>
                       {heartAnimationState === 'UNDETERMINED' ? (
                         <HeartOutline className="heart-outline" />
