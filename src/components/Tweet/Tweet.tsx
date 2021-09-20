@@ -253,6 +253,7 @@ const Paragraph = styled.p`
   position: relative;
   min-width: 0px;
   overflow-wrap: break-word;
+  white-space: break-spaces;
 
   user-select: text;
   font-weight: 400;
