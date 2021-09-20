@@ -3,12 +3,10 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import ExportOutlineIcon from '../../assets/export.svg';
-import TrashIcon from '../../assets/trash.svg';
-import { MenuItem } from '../MenuItem';
 import { MenuList } from '../MenuList';
 import { ActionCircle, ActionItem } from './Actions';
 
-export const ExportButton = () => {
+export const ExportButton: React.FC = ({ children }) => {
   const [isMenuShown, setMenuShown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -47,21 +45,7 @@ export const ExportButton = () => {
           exit={{ opacity: 0 }}
           transition={{ ease: 'linear' }}
         >
-          <AbsoluteMenuList>
-            {/* FIXME: pass proper items */}
-            <MenuItem
-              icon={<TrashIcon />}
-              title="Delete"
-              destructive
-              onClick={() => {}}
-            />
-            <MenuItem
-              icon={<TrashIcon />}
-              title="Delete"
-              destructive
-              onClick={() => {}}
-            />
-          </AbsoluteMenuList>
+          <AbsoluteMenuList>{children}</AbsoluteMenuList>
         </AnimateList>
       )}
     </Export>

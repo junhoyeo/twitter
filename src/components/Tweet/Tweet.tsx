@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import React, { useCallback, useState } from 'react';
 import styled, { css } from 'styled-components';
 
+import AddBookmarkIcon from '../../assets/add-bookmark.svg';
 import HeartOutlineIcon from '../../assets/heart-outline.svg';
 import HeartFilledIcon from '../../assets/heart-solid.svg';
 import TrashIcon from '../../assets/trash.svg';
@@ -106,7 +107,13 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                   {tweetObj.likes?.length || 0}
                 </LikeCount>
               </Likes>
-              <ExportButton />
+              <ExportButton>
+                <MenuItem
+                  icon={<AddBookmarkIcon />}
+                  title="Add Tweet to Bookmarks"
+                  onClick={() => {}}
+                />
+              </ExportButton>
             </Actions>
           )}
         </Content>

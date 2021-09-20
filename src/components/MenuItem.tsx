@@ -32,6 +32,7 @@ const Container = styled.li<DestructiveProps>`
   list-style-type: none;
   align-items: center;
   display: flex;
+  cursor: pointer;
 
   & > svg {
     width: 18.75px;
