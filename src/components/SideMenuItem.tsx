@@ -48,7 +48,6 @@ const Container = styled.li<ContainerProps>`
 
   @media (max-width: 1200px) {
     min-width: fit-content;
-    padding: 12x;
     justify-content: center;
   }
 

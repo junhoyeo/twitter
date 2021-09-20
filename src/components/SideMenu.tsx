@@ -11,6 +11,7 @@ import HomeSolidIcon from '../assets/sidemenu/home-solid.svg';
 import ProfileOutlineIcon from '../assets/sidemenu/profile-outline.svg';
 import ProfileSolidIcon from '../assets/sidemenu/profile-solid.svg';
 import TwitterLogoIcon from '../assets/twitter.svg';
+import WriteIcon from '../assets/write.svg';
 
 import { SideMenuItem } from './SideMenuItem';
 
@@ -59,7 +60,10 @@ export const SideMenu = () => {
               );
             })}
           </SidemenuList>
-          <TweetButton type="button">Tweet</TweetButton>
+          <TweetButton type="button">
+            <Desktop>Tweet</Desktop>
+            <WriteTweetIcon />
+          </TweetButton>
         </Sticky>
       </Container>
     </Wrapper>
@@ -109,6 +113,11 @@ const SidemenuList = styled.ul`
   margin-top: 2px;
   margin-bottom: 4px;
   padding: 0;
+
+  @media (max-width: 1200px) {
+    margin-left: auto;
+    margin-right: auto;
+  }
 `;
 
 const TweetButton = styled.button`
@@ -117,7 +126,6 @@ const TweetButton = styled.button`
   padding: 0 32px;
 
   width: 90%;
-  min-width: 52px;
   min-height: 52px;
 
   background-color: rgb(29, 155, 240);
@@ -131,10 +139,41 @@ const TweetButton = styled.button`
   line-height: 20px;
   color: rgb(255, 255, 255);
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border: 1px solid black;
   border-radius: 45px;
 
   &:hover {
     background-color: rgb(26, 140, 216);
+  }
+
+  @media (max-width: 1200px) {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+
+    width: 50px;
+    height: 50px;
+    min-height: unset;
+  }
+`;
+
+const Desktop = styled.span`
+  @media (max-width: 1200px) {
+    display: none;
+  }
+`;
+
+const WriteTweetIcon = styled(WriteIcon)`
+  display: none;
+  width: 24px;
+  height: 24px;
+  fill: white;
+
+  @media (max-width: 1200px) {
+    display: block;
   }
 `;
