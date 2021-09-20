@@ -1,4 +1,5 @@
 import { useRouter } from 'next/dist/client/router';
+import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -49,9 +50,12 @@ export const SideMenu = () => {
     <Wrapper>
       <Container>
         <Sticky>
-          <TwitterLogoContainer>
-            <TwitterLogo />
-          </TwitterLogoContainer>
+          {/* FIXME: move to /landing if not logged in */}
+          <Link href="/">
+            <TwitterLogoContainer>
+              <TwitterLogo />
+            </TwitterLogoContainer>
+          </Link>
           <SidemenuList>
             {sideMenuItems.map((props) => {
               const selected = pathname === props.path;
@@ -97,6 +101,7 @@ const Container = styled.div``;
 const TwitterLogoContainer = styled.div`
   width: 52px;
   height: 52px;
+  cursor: pointer;
 
   display: flex;
   align-items: center;
