@@ -41,7 +41,7 @@ export const CreateTweetForm = ({ userObj }) => {
       attachmentUrl = await uploadAttachment(attachment);
     }
     const tweetObj = {
-      text: tweet,
+      text: tweet.trim(),
       createdAt: Date.now(),
       creatorId: userObj.uid,
       attachmentUrl: attachmentUrl || '',
