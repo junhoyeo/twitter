@@ -2,7 +2,7 @@ import useWindowSize from '../hooks/useWindowSize';
 
 export const Breakpoints = {
   Handset: 1000,
-  Mobile: 500,
+  Mobile: 600,
 };
 
 export const onHandset = `@media (max-width: ${Breakpoints.Handset}px)`;

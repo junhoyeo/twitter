@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+import { onMobile } from '../utils/relatives';
+
 import { SideMenu } from './SideMenu';
 
 export const Layout: React.FC = ({ children }) => {
@@ -30,7 +32,7 @@ const MainWrapper = styled.div`
   flex-grow: 1;
   align-items: flex-start;
 
-  @media (max-width: 600px) {
+  ${onMobile} {
     width: -webkit-fill-available;
   }
 `;
@@ -42,7 +44,7 @@ const MainContainer = styled.div`
   justify-content: space-between;
   align-items: stretch;
 
-  @media (max-width: 600px) {
+  ${onMobile} {
     width: 100%;
   }
 `;
@@ -64,7 +66,7 @@ const Container = styled.div`
   border-left: 1px solid rgb(47, 51, 54);
   border-right: 1px solid rgb(47, 51, 54);
 
-  @media (max-width: 600px) {
+  ${onMobile} {
     width: 100%;
     max-width: unset;
   }
@@ -74,7 +76,7 @@ const RightContent = styled.div`
   margin-right: 10px;
   width: 350px;
 
-  @media (max-width: 600px) {
+  ${onMobile} {
     display: none;
   }
 `;
