@@ -92,6 +92,10 @@ const ShineIcon = styled(ShineOutlineIcon)`
 
 const AnimatedListItem = styled(motion.li)`
   list-style-type: none;
+
+  &:last-of-type {
+    border-bottom: 1px solid rgb(47, 51, 54);
+  }
 `;
 
 const BottomGap = styled.div`
