@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 
 import SearchIcon from '../../assets/search.svg';
 import { TrendsForYou } from './TrendsForYou';
+import { WhoToFollow } from './WhoToFollow';
 
 type Props = React.HTMLAttributes<HTMLDivElement>;
 
@@ -22,6 +23,7 @@ export const RightSideBar: React.FC<Props> = (props) => {
         </SearchBarContainer>
       </Sticky>
       <TrendsForYou />
+      <WhoToFollow />
     </Container>
   );
 };
