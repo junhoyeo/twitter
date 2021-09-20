@@ -3,9 +3,9 @@ import React from 'react';
 import { useRecoilValueLoadable } from 'recoil';
 import styled from 'styled-components';
 
+import { AnimatedTweets } from '../components/AnimatedTweets';
 import { Layout } from '../components/Layout';
 import { NavigationBar } from '../components/NavigationBar';
-import { Tweet } from '../components/Tweet';
 
 import { bookmarksAtom } from '../recoil/bookmarks';
 
@@ -22,13 +22,7 @@ const BookmarksPage = () => {
       {bookmarks.state !== 'loading' && bookmarks.contents.length === 0 && (
         <EmptyMessage />
       )}
-      {bookmarks.contents?.map((tweet) => (
-        <Tweet
-          key={tweet.id}
-          tweetObj={tweet}
-          isOwner={tweet.creatorId === userObj.uid}
-        />
-      ))}
+      <AnimatedTweets user={userObj} tweets={bookmarks.contents} />
     </Layout>
   );
 };
