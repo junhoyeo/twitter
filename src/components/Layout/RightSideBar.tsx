@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import { useState } from 'react';
+import styled, { css } from 'styled-components';
 
 import SearchIcon from '../../assets/search.svg';
 import { TrendsForYou } from './TrendsForYou';
@@ -6,12 +7,18 @@ import { TrendsForYou } from './TrendsForYou';
 type Props = React.HTMLAttributes<HTMLDivElement>;
 
 export const RightSideBar: React.FC<Props> = (props) => {
+  const [isFocused, setFocused] = useState<boolean>(false);
+
   return (
     <Container {...props}>
       <Sticky>
-        <SearchBarContainer>
+        <SearchBarContainer focused={isFocused}>
           <SearchIcon />
-          <SearchBarInput placeholder="Search Twitter" />
+          <SearchBarInput
+            onFocus={() => setFocused(true)}
+            onBlur={() => setFocused(false)}
+            placeholder="Search Twitter"
+          />
         </SearchBarContainer>
       </Sticky>
       <TrendsForYou />
@@ -40,7 +47,11 @@ const Sticky = styled.div`
 
   display: flex;
 `;
-const SearchBarContainer = styled.div`
+
+type SearchBarContainerProps = {
+  focused: boolean;
+};
+const SearchBarContainer = styled.div<SearchBarContainerProps>`
   margin: auto;
   width: 100%;
   height: 42px;
@@ -59,7 +70,19 @@ const SearchBarContainer = styled.div`
     min-width: 44px;
     height: 18.75px;
   }
+
+  ${({ focused }) =>
+    focused &&
+    css`
+      border-color: rgb(29, 155, 240);
+      background-color: transparent;
+
+      & > svg {
+        fill: rgb(29, 155, 240);
+      }
+    `};
 `;
+
 const SearchBarInput = styled.input`
   padding: 12px;
   width: 100%;
