@@ -3,17 +3,16 @@ import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 
-import BookmarksOutlineIcon from '../assets/sidemenu/bookmarks-outline.svg';
-import BookmarksSolidIcon from '../assets/sidemenu/bookmarks-solid.svg';
-import ExploreOutlineIcon from '../assets/sidemenu/explore-outline.svg';
-import ExploreSolidIcon from '../assets/sidemenu/explore-solid.svg';
-import HomeOutlineIcon from '../assets/sidemenu/home-outline.svg';
-import HomeSolidIcon from '../assets/sidemenu/home-solid.svg';
-import ProfileOutlineIcon from '../assets/sidemenu/profile-outline.svg';
-import ProfileSolidIcon from '../assets/sidemenu/profile-solid.svg';
-import TwitterLogoIcon from '../assets/twitter.svg';
-import WriteIcon from '../assets/write.svg';
-
+import BookmarksOutlineIcon from '../../assets/sidemenu/bookmarks-outline.svg';
+import BookmarksSolidIcon from '../../assets/sidemenu/bookmarks-solid.svg';
+import ExploreOutlineIcon from '../../assets/sidemenu/explore-outline.svg';
+import ExploreSolidIcon from '../../assets/sidemenu/explore-solid.svg';
+import HomeOutlineIcon from '../../assets/sidemenu/home-outline.svg';
+import HomeSolidIcon from '../../assets/sidemenu/home-solid.svg';
+import ProfileOutlineIcon from '../../assets/sidemenu/profile-outline.svg';
+import ProfileSolidIcon from '../../assets/sidemenu/profile-solid.svg';
+import TwitterLogoIcon from '../../assets/twitter.svg';
+import WriteIcon from '../../assets/write.svg';
 import { SideMenuItem } from './SideMenuItem';
 
 const sideMenuItems = [

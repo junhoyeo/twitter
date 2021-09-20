@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { onMobile } from '../utils/relatives';
-
+import { onMobile } from '../../utils/relatives';
 import { SideMenu } from './SideMenu';
 
 export const Layout: React.FC = ({ children }) => {
