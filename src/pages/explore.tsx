@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
+import VerifiedIcon from '../assets/verified.svg';
+
 import { Layout } from '../components/Layout';
 
 const ExplorePage = () => {
@@ -8,7 +10,13 @@ const ExplorePage = () => {
     <Layout>
       <VideoContainer>
         <VideoOverlay>
-          <VideoMeta>GitHub · LIVE</VideoMeta>
+          <VideoMeta>
+            <ProfileImage src="/images/github-logo-32px.png" />
+            <strong>GitHub</strong>
+            <VerifiedBadge />
+            <Divider />
+            <span>LIVE</span>
+          </VideoMeta>
           <VideoTitle>
             The journey of the world's open source code to the Arctic - GitHub
             Arctic Code Vault
@@ -65,11 +73,31 @@ const Video = styled.video`
   object-fit: cover;
 `;
 
-const VideoMeta = styled.span`
+const VideoMeta = styled.div`
+  margin-bottom: 4px;
   line-height: 16px;
   font-size: 13px;
   color: white;
+  display: flex;
+  align-items: center;
 `;
+const ProfileImage = styled.img`
+  width: 16.25px;
+  height: 16.25px;
+  margin-right: 4px;
+  border-radius: 50%;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+`;
+const VerifiedBadge = styled(VerifiedIcon)`
+  margin-left: 2px;
+  width: 16.25px;
+  height: 16.25px;
+  fill: white;
+`;
+const Divider = () => (
+  <span style={{ paddingLeft: 4, paddingRight: 4 }}> · </span>
+);
 const VideoTitle = styled.h2`
   margin: 2px 0;
   font-weight: 800;
