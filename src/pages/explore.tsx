@@ -1,11 +1,13 @@
 import React from 'react';
 
 import { Layout } from '../components/Layout';
+import { NavigationBar } from '../components/NavigationBar';
 import { VideoBanner } from '../components/VideoBanner';
 
 const ExplorePage = () => {
   return (
     <Layout>
+      <NavigationBar />
       <VideoBanner
         title="The journey of the world's open source code to the Arctic - GitHub Arctic Code Vault"
         createdAt="LIVE"

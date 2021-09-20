@@ -6,7 +6,7 @@ import { NavigationBar } from '../components/NavigationBar';
 const ProfilePage = () => {
   return (
     <Layout>
-      <NavigationBar title="Junho Yeo"></NavigationBar>
+      <NavigationBar title="Junho Yeo" subtitle="@_junhoyeo" />
     </Layout>
   );
 };

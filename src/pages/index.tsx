@@ -45,7 +45,9 @@ const Home = () => {
           <ShineIcon />
         </ShineButton>
       </NavigationBar>
-      <CreateTweetForm userObj={userObj} />
+      <FormWrapper>
+        <CreateTweetForm userObj={userObj} />
+      </FormWrapper>
       <AnimatePresence>
         {typeof tweets === 'undefined' && <ActivityIndicator />}
         {tweets?.map((tweet, index: number) => {
@@ -110,12 +112,12 @@ const ShineIcon = styled(ShineOutlineIcon)`
   height: 20px;
 `;
 
+const FormWrapper = styled.div`
+  border-bottom: 1px solid rgb(47, 51, 54);
+`;
+
 const AnimatedListItem = styled(motion.li)`
   list-style-type: none;
-
-  &:last-of-type {
-    border-bottom: 1px solid rgb(47, 51, 54);
-  }
 `;
 
 const BottomGap = styled.div`

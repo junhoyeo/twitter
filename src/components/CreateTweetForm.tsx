@@ -137,7 +137,6 @@ const Form = styled.form`
   width: 100%;
   padding: 12px 16px;
   display: flex;
-  border-top: 1px solid rgb(47, 51, 54);
 `;
 
 const AvatarContainer = styled.div`
