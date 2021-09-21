@@ -78,6 +78,11 @@ const Container = styled.div`
     width: 100%;
     max-width: unset;
   }
+
+  @media (max-width: 500px) {
+    border-left: none;
+    border-right: none;
+  }
 `;
 
 const SideBar = styled(RightSideBar)`

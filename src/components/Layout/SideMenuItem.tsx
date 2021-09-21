@@ -51,6 +51,11 @@ const Container = styled.li<ContainerProps>`
     justify-content: center;
   }
 
+  @media (max-width: 500px) {
+    margin-left: 0;
+    flex: 1;
+  }
+
   & > * {
     transition: all 0.1s ease-in-out;
   }

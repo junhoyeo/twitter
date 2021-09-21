@@ -77,6 +77,21 @@ const Wrapper = styled.header`
   flex-grow: 1;
   justify-content: flex-end;
   display: flex;
+
+  @media (max-width: 500px) {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+`;
+
+const Container = styled.div`
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const Sticky = styled.div`
@@ -93,9 +108,13 @@ const Sticky = styled.div`
   @media (max-width: 1265px) {
     width: fit-content;
   }
-`;
 
-const Container = styled.div``;
+  @media (max-width: 500px) {
+    padding: 0;
+    width: 100%;
+    position: unset;
+  }
+`;
 
 const TwitterLogoContainer = styled.div`
   width: 52px;
@@ -105,6 +124,10 @@ const TwitterLogoContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media (max-width: 500px) {
+    display: none;
+  }
 `;
 const TwitterLogo = styled(TwitterLogoIcon)`
   fill: rgb(217, 217, 217);
@@ -121,6 +144,16 @@ const SidemenuList = styled.ul`
   @media (max-width: 1265px) {
     margin-left: auto;
     margin-right: auto;
+  }
+
+  @media (max-width: 500px) {
+    margin: 0;
+    padding-bottom: env(safe-area-inset-bottom);
+    width: 100%;
+    display: flex;
+
+    border-top: 1px solid rgb(47, 51, 54);
+    background-color: rgba(0, 0, 0, 1);
   }
 `;
 
@@ -162,6 +195,12 @@ const TweetButton = styled.button`
     width: 50px;
     height: 50px;
     min-height: unset;
+  }
+
+  @media (max-width: 500px) {
+    position: fixed;
+    right: 20px;
+    bottom: 70px;
   }
 `;
 
