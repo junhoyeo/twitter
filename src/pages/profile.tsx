@@ -1,6 +1,9 @@
-import { useRouter } from 'next/dist/client/router';
+import * as DateFns from 'date-fns';
+import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
+
+import CalendarIcon from '../assets/calendar.svg';
 
 import { AnimatedTweets } from '../components/AnimatedTweets';
 import { Layout } from '../components/Layout';
@@ -57,6 +60,14 @@ const ProfilePage = () => {
       });
   }, []);
 
+  const createdAt = useMemo(() => {
+    if (!user || !user.metadata?.creationTime) {
+      return undefined;
+    }
+    const createdTime = new Date(user.metadata.creationTime);
+    return `Joined ${DateFns.format(createdTime, 'MMMM yyyy')}`;
+  }, [user]);
+
   if (!user) {
     return null;
   }
@@ -69,6 +80,12 @@ const ProfilePage = () => {
         <ProfileImage src={user.photoURL} />
         <DisplayName>{user.displayName}</DisplayName>
         <Username>{`@${user.uid}`}</Username>
+        <UserMetadata>
+          <CreatedAt>
+            <CalendarIcon />
+            {createdAt}
+          </CreatedAt>
+        </UserMetadata>
       </ProfileContainer>
       <Tab
         selected={currentTab}
@@ -118,4 +135,23 @@ const Username = styled.p`
   font-size: 15px;
   line-height: 20px;
   color: rgb(110, 118, 125);
+`;
+const UserMetadata = styled.div`
+  margin-bottom: 12px;
+`;
+const CreatedAt = styled.span`
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 12px;
+  color: rgb(110, 118, 125);
+
+  display: flex;
+  align-items: center;
+
+  & > svg {
+    margin-right: 4px;
+    width: 18.75px;
+    height: 18.75px;
+    fill: rgb(110, 118, 125);
+  }
 `;
