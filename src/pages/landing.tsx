@@ -35,14 +35,20 @@ const LandingPage = () => {
   }, [isHandset, windowHeight, windowWidth]);
 
   const auth = useFirebase('auth');
-  const onSignUpWithGoogle = useCallback(async () => {
-    const googleProvider = new firebase.auth.GoogleAuthProvider();
-    await auth.signInWithPopup(googleProvider);
-  }, []);
-  const onSignUpWithGitHub = useCallback(async () => {
-    const githubProvider = new firebase.auth.GithubAuthProvider();
-    await auth.signInWithPopup(githubProvider);
-  }, []);
+  const onClickSignUp = useCallback(
+    async (
+      AuthProvider:
+        | typeof firebase.auth.GoogleAuthProvider
+        | typeof firebase.auth.GithubAuthProvider,
+    ) => {
+      await firebase
+        .auth()
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const authProvider = new AuthProvider();
+      await auth.signInWithPopup(authProvider);
+    },
+    [],
+  );
 
   return (
     <Page>
@@ -60,10 +66,14 @@ const LandingPage = () => {
               now
             </Title>
             <Subtitle>Join Twitter today.</Subtitle>
-            <SignUpButton onClick={onSignUpWithGoogle}>
+            <SignUpButton
+              onClick={() => onClickSignUp(firebase.auth.GoogleAuthProvider)}
+            >
               Sign up with Google
             </SignUpButton>
-            <SignUpButton onClick={onSignUpWithGitHub}>
+            <SignUpButton
+              onClick={() => onClickSignUp(firebase.auth.GithubAuthProvider)}
+            >
               Sign up with GitHub
             </SignUpButton>
           </Section>
