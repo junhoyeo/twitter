@@ -90,7 +90,7 @@ const Sticky = styled.div`
   position: sticky;
   top: 0;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1265px) {
     width: fit-content;
   }
 `;
@@ -118,7 +118,7 @@ const SidemenuList = styled.ul`
   margin-bottom: 4px;
   padding: 0;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1265px) {
     margin-left: auto;
     margin-right: auto;
   }
@@ -154,7 +154,7 @@ const TweetButton = styled.button`
     background-color: rgb(26, 140, 216);
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1265px) {
     margin-left: auto;
     margin-right: auto;
     padding: 0;
@@ -166,7 +166,7 @@ const TweetButton = styled.button`
 `;
 
 const Desktop = styled.span`
-  @media (max-width: 1200px) {
+  @media (max-width: 1265px) {
     display: none;
   }
 `;
@@ -177,7 +177,7 @@ const WriteTweetIcon = styled(WriteIcon)`
   height: 24px;
   fill: white;
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1265px) {
     display: block;
   }
 `;

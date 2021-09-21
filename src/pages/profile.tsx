@@ -58,7 +58,7 @@ const ProfilePage = () => {
   }, []);
 
   if (!user) {
-    return <Layout />;
+    return null;
   }
 
   return (

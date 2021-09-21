@@ -46,7 +46,7 @@ const Container = styled.li<ContainerProps>`
     min-width: 220px;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 1265px) {
     min-width: fit-content;
     justify-content: center;
   }
@@ -68,7 +68,7 @@ const Container = styled.li<ContainerProps>`
     line-height: 24px;
     color: #d9d9d9;
 
-    @media (max-width: 1200px) {
+    @media (max-width: 1265px) {
       display: none;
     }
   }

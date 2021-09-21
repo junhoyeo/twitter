@@ -32,7 +32,7 @@ const MainWrapper = styled.div`
   flex-grow: 1;
   align-items: flex-start;
 
-  ${onMobile} {
+  @media (max-width: 690px) {
     width: -webkit-fill-available;
   }
 `;
@@ -44,7 +44,15 @@ const MainContainer = styled.div`
   justify-content: space-between;
   align-items: stretch;
 
+  @media (max-width: 1065px) {
+    width: 920px;
+  }
+
   @media (max-width: 990px) {
+    width: 600px;
+  }
+
+  @media (max-width: 690px) {
     width: 100%;
   }
 `;
@@ -75,6 +83,10 @@ const Container = styled.div`
 const SideBar = styled(RightSideBar)`
   margin-right: 10px;
   width: 350px;
+
+  @media (max-width: 1078px) {
+    width: 290px;
+  }
 
   @media (max-width: 990px) {
     display: none;
