@@ -1,3 +1,4 @@
+import { useRouter } from 'next/dist/client/router';
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
@@ -28,16 +29,24 @@ const ProfilePage = () => {
     if (typeof myTweets !== 'undefined') {
       return `${myTweets.length} Tweets`;
     }
+    if (!user) {
+      return undefined;
+    }
     return `@${user.uid}`;
-  }, [myTweets, user.uid]);
+  }, [myTweets, user]);
 
+  const router = useRouter();
   useEffect(() => {
     if (!firestore) {
       return;
     }
+    if (!user) {
+      router.push('/landing');
+      return;
+    }
     firestore
       .collection('tweets')
-      .where('creatorId', '==', user.uid)
+      .where('creator.uid', '==', user.uid)
       .orderBy('createdAt', 'desc')
       .onSnapshot((snapshot) => {
         const tweetArray = snapshot.docs.map((doc) => ({
@@ -47,6 +56,10 @@ const ProfilePage = () => {
         setMyTweets(tweetArray);
       });
   }, []);
+
+  if (!user) {
+    return <Layout />;
+  }
 
   return (
     <Layout>
