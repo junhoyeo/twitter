@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
+import { AnimatedTweets } from '../components/AnimatedTweets';
 import { Layout } from '../components/Layout';
 import { NavigationBar } from '../components/NavigationBar';
 import { Tab } from '../components/Tab';
+
+import { useFirebase } from '../utils/firebase';
 
 type ProfileTab = 'Tweets' | 'Tweets & replies' | 'Media' | 'Likes';
 const PROFILE_TABS: ProfileTab[] = [
@@ -15,12 +18,45 @@ const PROFILE_TABS: ProfileTab[] = [
 
 const ProfilePage = () => {
   const [currentTab, setCurrentTab] = useState<ProfileTab>(PROFILE_TABS[0]);
+  const [myTweets, setMyTweets] = useState(undefined);
+  const user = {
+    displayName: 'Junho Yeo',
+    username: '_junhoyeo',
+    avatar: 'https://github.com/junhoyeo.png',
+    uid: 'test',
+  };
+
+  const subtitle = useMemo(() => {
+    if (myTweets?.length) {
+      return `${myTweets.length} Tweets`;
+    }
+    return user.username;
+  }, [myTweets, user.username]);
+
+  const firestore = useFirebase('firestore');
+  useEffect(() => {
+    if (!firestore) {
+      return;
+    }
+    firestore
+      .collection('tweets')
+      .where('creatorId', '==', user.uid)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((snapshot) => {
+        const tweetArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMyTweets(tweetArray);
+      });
+  }, []);
+
   return (
     <Layout>
-      <NavigationBar title="Junho Yeo" subtitle="@_junhoyeo" />
+      <NavigationBar title={user.displayName} subtitle={subtitle} />
       <CoverImage src="/images/profile-background.png" />
       <ProfileContainer>
-        <ProfileImage src="https://github.com/junhoyeo.png" />
+        <ProfileImage src={user.avatar} />
         <DisplayName>Junho Yeo</DisplayName>
         <Username>@_junhoyeo</Username>
       </ProfileContainer>
@@ -29,6 +65,9 @@ const ProfilePage = () => {
         items={PROFILE_TABS}
         onChangeTab={(tab) => setCurrentTab(tab)}
       />
+      {currentTab === 'Tweets' && (
+        <AnimatedTweets user={user} tweets={myTweets} />
+      )}
     </Layout>
   );
 };
