@@ -12,11 +12,11 @@ import { useFirebase } from '../utils/firebase';
 
 const Home = () => {
   const [tweets, setTweets] = useState(undefined);
-  const firestore = useFirebase('firestore');
-  const userObj = {
-    displayName: 'Junho Yeo',
-    uid: 'test',
-  };
+
+  const firebase = useFirebase();
+  const firestore = firebase.firestore();
+  const auth = firebase.auth();
+  const user = auth.currentUser;
 
   useEffect(() => {
     if (!firestore) {
@@ -41,10 +41,8 @@ const Home = () => {
           <ShineIcon />
         </ShineButton>
       </NavigationBar>
-      <FormWrapper>
-        <CreateTweetForm userObj={userObj} />
-      </FormWrapper>
-      <AnimatedTweets user={userObj} tweets={tweets} />
+      <FormWrapper>{user && <CreateTweetForm user={user} />}</FormWrapper>
+      <AnimatedTweets user={user} tweets={tweets} />
     </Layout>
   );
 };

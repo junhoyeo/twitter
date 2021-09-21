@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useRecoilValueLoadable } from 'recoil';
 import styled from 'styled-components';
 
@@ -7,22 +7,30 @@ import { AnimatedTweets } from '../components/AnimatedTweets';
 import { Layout } from '../components/Layout';
 import { NavigationBar } from '../components/NavigationBar';
 
+import { useFirebase } from '../utils/firebase';
+
 import { bookmarksAtom } from '../recoil/bookmarks';
 
 const BookmarksPage = () => {
   const bookmarks = useRecoilValueLoadable(bookmarksAtom);
-  const userObj = {
-    displayName: 'Junho Yeo',
-    uid: 'test',
-  };
+
+  const auth = useFirebase('auth');
+  const user = auth.currentUser;
+
+  const subtitle = useMemo(() => {
+    if (user === null) {
+      return undefined;
+    }
+    return `@${user.uid}`;
+  }, []);
 
   return (
     <Layout>
-      <NavigationBar title="Bookmarks" subtitle="@_junhoyeo" />
+      <NavigationBar title="Bookmarks" subtitle={subtitle} />
       {bookmarks.state !== 'loading' && bookmarks.contents.length === 0 && (
         <EmptyMessage />
       )}
-      <AnimatedTweets user={userObj} tweets={bookmarks.contents} />
+      <AnimatedTweets user={user} tweets={bookmarks.contents} />
     </Layout>
   );
 };

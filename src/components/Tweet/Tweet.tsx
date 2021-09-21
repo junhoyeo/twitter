@@ -92,11 +92,14 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         .doc(`tweets/${tweetObj.id}`)
         .delete()
         .catch(() => {});
-      firebase
-        .storage()
-        .refFromURL(tweetObj.attachmentUrl)
-        .delete()
-        .catch(() => {});
+
+      if (tweetObj.attachmentUrl) {
+        firebase
+          .storage()
+          .refFromURL(tweetObj.attachmentUrl)
+          .delete()
+          .catch(() => {});
+      }
     }, 200);
   }, []);
 
@@ -104,14 +107,15 @@ export const Tweet = ({ tweetObj, isOwner }) => {
     <React.Fragment>
       <Container>
         <AvatarContainer>
-          <Avatar src="https://github.com/junhoyeo.png" alt="avatar" />
+          <Avatar src={tweetObj.creator?.photoURL} alt="avatar" />
         </AvatarContainer>
         <Content>
           <TopRow>
             <span>
-              <DisplayName>Junho Yeo</DisplayName>
-              <Metadata>@_junhoyeo · 5h</Metadata>
+              <DisplayName>{tweetObj.creator?.displayName}</DisplayName>
+              <Metadata>{`@${tweetObj.creator?.uid}`} · 5h</Metadata>
             </span>
+            {/* {isOwner && ( */}
             <MoreButton>
               <MenuItem
                 icon={<TrashIcon />}
@@ -120,6 +124,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                 onClick={() => setDeleteModalOpen(true)}
               />
             </MoreButton>
+            {/* )} */}
           </TopRow>
           <Paragraph>{tweetObj.text}</Paragraph>
           {tweetObj.attachmentUrl && (
@@ -127,51 +132,49 @@ export const Tweet = ({ tweetObj, isOwner }) => {
               <Image src={tweetObj.attachmentUrl} />
             </ImageContainer>
           )}
-          {isOwner && (
-            <Actions>
-              <Likes>
-                <ActionCircle className="heart-circle">
-                  <HeartContainer onClick={onClickLike}>
-                    <HeartCenter>
-                      {heartAnimationState === 'UNDETERMINED' ? (
-                        <HeartOutline className="heart-outline" />
-                      ) : heartAnimationState === 'ANIMATED' ? (
-                        <HeartAnimation />
-                      ) : (
-                        <HeartFilled />
-                      )}
-                    </HeartCenter>
-                  </HeartContainer>
-                </ActionCircle>
-                <LikeCount
-                  className="like-count"
-                  liked={heartAnimationState !== 'UNDETERMINED'}
-                >
-                  {tweetObj.likes?.length || 0}
-                </LikeCount>
-              </Likes>
-              <ExportButton>
-                <MenuItem
-                  icon={<AddBookmarkIcon />}
-                  title={
-                    !isBookmarked
-                      ? 'Add Tweet to Bookmarks'
-                      : 'Remove Tweet from Bookmarks'
-                  }
-                  onClick={() => {
-                    !isBookmarked
-                      ? setBookmarks([...bookmarks, tweetObj])
-                      : setBookmarks(
-                          bookmarks.filter(
-                            (bookmarkedTweet) =>
-                              bookmarkedTweet.id !== tweetObj.id,
-                          ),
-                        );
-                  }}
-                />
-              </ExportButton>
-            </Actions>
-          )}
+          <Actions>
+            <Likes>
+              <ActionCircle className="heart-circle">
+                <HeartContainer onClick={onClickLike}>
+                  <HeartCenter>
+                    {heartAnimationState === 'UNDETERMINED' ? (
+                      <HeartOutline className="heart-outline" />
+                    ) : heartAnimationState === 'ANIMATED' ? (
+                      <HeartAnimation />
+                    ) : (
+                      <HeartFilled />
+                    )}
+                  </HeartCenter>
+                </HeartContainer>
+              </ActionCircle>
+              <LikeCount
+                className="like-count"
+                liked={heartAnimationState !== 'UNDETERMINED'}
+              >
+                {tweetObj.likes?.length || 0}
+              </LikeCount>
+            </Likes>
+            <ExportButton>
+              <MenuItem
+                icon={<AddBookmarkIcon />}
+                title={
+                  !isBookmarked
+                    ? 'Add Tweet to Bookmarks'
+                    : 'Remove Tweet from Bookmarks'
+                }
+                onClick={() => {
+                  !isBookmarked
+                    ? setBookmarks([...bookmarks, tweetObj])
+                    : setBookmarks(
+                        bookmarks.filter(
+                          (bookmarkedTweet) =>
+                            bookmarkedTweet.id !== tweetObj.id,
+                        ),
+                      );
+                }}
+              />
+            </ExportButton>
+          </Actions>
         </Content>
       </Container>
       <Portal>

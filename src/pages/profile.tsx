@@ -19,21 +19,18 @@ const PROFILE_TABS: ProfileTab[] = [
 const ProfilePage = () => {
   const [currentTab, setCurrentTab] = useState<ProfileTab>(PROFILE_TABS[0]);
   const [myTweets, setMyTweets] = useState(undefined);
-  const user = {
-    displayName: 'Junho Yeo',
-    username: '_junhoyeo',
-    avatar: 'https://github.com/junhoyeo.png',
-    uid: 'test',
-  };
+
+  const firebase = useFirebase();
+  const [firestore, auth] = [firebase.firestore(), firebase.auth()];
+  const user = auth.currentUser;
 
   const subtitle = useMemo(() => {
-    if (myTweets?.length) {
+    if (typeof myTweets !== 'undefined') {
       return `${myTweets.length} Tweets`;
     }
-    return user.username;
-  }, [myTweets, user.username]);
+    return `@${user.uid}`;
+  }, [myTweets, user.uid]);
 
-  const firestore = useFirebase('firestore');
   useEffect(() => {
     if (!firestore) {
       return;
@@ -56,9 +53,9 @@ const ProfilePage = () => {
       <NavigationBar title={user.displayName} subtitle={subtitle} />
       <CoverImage src="/images/profile-background.png" />
       <ProfileContainer>
-        <ProfileImage src={user.avatar} />
-        <DisplayName>Junho Yeo</DisplayName>
-        <Username>@_junhoyeo</Username>
+        <ProfileImage src={user.photoURL} />
+        <DisplayName>{user.displayName}</DisplayName>
+        <Username>{`@${user.uid}`}</Username>
       </ProfileContainer>
       <Tab
         selected={currentTab}

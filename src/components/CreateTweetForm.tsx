@@ -1,3 +1,4 @@
+import firebase from 'firebase/app';
 import React, { useCallback, useMemo, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import styled, { css } from 'styled-components';
@@ -7,7 +8,10 @@ import GlobeIcon from '../assets/globe.svg';
 
 import { useFirebase } from '../utils/firebase';
 
-export const CreateTweetForm = ({ userObj }) => {
+type Props = {
+  user: firebase.User;
+};
+export const CreateTweetForm: React.FC<Props> = ({ user }) => {
   const [tweet, setTweet] = useState('');
   const submitDisabled = useMemo(() => tweet.trim().length === 0, [tweet]);
   const [isDraftInputDirty, setDraftInputDirty] = useState<boolean>(false);
@@ -23,7 +27,7 @@ export const CreateTweetForm = ({ userObj }) => {
       if (!storage) {
         return;
       }
-      const attachmentRef = storage.ref().child(`${userObj.uid}/${uuidv4()}`);
+      const attachmentRef = storage.ref().child(`${user.uid}/${uuidv4()}`);
       const response = await attachmentRef.putString(attachment, 'data_url');
       const attachmentUrl = await response.ref.getDownloadURL();
       return attachmentUrl;
@@ -43,7 +47,11 @@ export const CreateTweetForm = ({ userObj }) => {
     const tweetObj = {
       text: tweet.trim(),
       createdAt: Date.now(),
-      creatorId: userObj.uid,
+      creator: {
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      },
       attachmentUrl: attachmentUrl || '',
     };
     await firestore.collection('tweets').add(tweetObj);
@@ -80,7 +88,7 @@ export const CreateTweetForm = ({ userObj }) => {
   return (
     <Form onSubmit={onSubmit}>
       <AvatarContainer>
-        <Avatar src="https://github.com/junhoyeo.png" alt="avatar" />
+        <Avatar src={user.photoURL} alt="avatar" />
       </AvatarContainer>
       <Content>
         <Input
