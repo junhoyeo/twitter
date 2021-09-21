@@ -1,6 +1,7 @@
+import firebase from 'firebase/app';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 import TwitterLogoIcon from '../assets/twitter.svg';
@@ -10,6 +11,7 @@ import { MobileContainer } from '../components/MobileContainer';
 
 import useWindowSize from '../hooks/useWindowSize';
 
+import { useFirebase } from '../utils/firebase';
 import { Breakpoints, onHandset, onMobile } from '../utils/relatives';
 
 const LandingPage = () => {
@@ -32,6 +34,16 @@ const LandingPage = () => {
     }
   }, [isHandset, windowHeight, windowWidth]);
 
+  const auth = useFirebase('auth');
+  const onSignUpWithGoogle = useCallback(async () => {
+    const googleProvider = new firebase.auth.GoogleAuthProvider();
+    await auth.signInWithPopup(googleProvider);
+  }, []);
+  const onSignUpWithGitHub = useCallback(async () => {
+    const githubProvider = new firebase.auth.GithubAuthProvider();
+    await auth.signInWithPopup(githubProvider);
+  }, []);
+
   return (
     <Page>
       <Container style={{ height: containerHeight }}>
@@ -48,8 +60,12 @@ const LandingPage = () => {
               now
             </Title>
             <Subtitle>Join Twitter today.</Subtitle>
-            <SignUpButton>Sign up with Google</SignUpButton>
-            <SignUpButton>Sign up with GitHub</SignUpButton>
+            <SignUpButton onClick={onSignUpWithGoogle}>
+              Sign up with Google
+            </SignUpButton>
+            <SignUpButton onClick={onSignUpWithGitHub}>
+              Sign up with GitHub
+            </SignUpButton>
           </Section>
         </Content>
         <RelativeCover>
