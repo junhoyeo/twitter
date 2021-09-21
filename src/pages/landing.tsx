@@ -48,6 +48,8 @@ const LandingPage = () => {
               now
             </Title>
             <Subtitle>Join Twitter today.</Subtitle>
+            <SignUpButton>Sign up with Google</SignUpButton>
+            <SignUpButton>Sign up with GitHub</SignUpButton>
           </Section>
         </Content>
         <RelativeCover>
@@ -151,12 +153,41 @@ const Title = styled.h1`
   }
 `;
 const Subtitle = styled.h2`
+  margin-bottom: 32px;
   font-size: 31px;
   font-weight: 700;
   font-family: 'TwitterChirpExtendedHeavy', Verdana;
 
   ${onMobile} {
     font-size: 23px;
+  }
+`;
+
+const SignUpButton = styled.button`
+  margin-bottom: 20px;
+  padding: 0 16px;
+  max-width: 300px;
+  width: 100%;
+  height: 40px;
+
+  background-color: rgba(255, 255, 255, 1);
+  border: 1px solid rgb(47, 51, 54);
+  border-radius: 99px;
+
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+
+  font-weight: 700;
+  font-size: 15px;
+  line-height: 20px;
+  color: rgb(15, 20, 25);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgb(230, 230, 230);
   }
 `;
 
