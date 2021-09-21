@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { Layout } from '../components/Layout';
 import { NavigationBar } from '../components/NavigationBar';
+import { Tab } from '../components/Tab';
+
+type ProfileTab = 'Tweets' | 'Tweets & replies' | 'Media' | 'Likes';
+const PROFILE_TABS: ProfileTab[] = [
+  'Tweets',
+  'Tweets & replies',
+  'Media',
+  'Likes',
+];
 
 const ProfilePage = () => {
+  const [currentTab, setCurrentTab] = useState<ProfileTab>(PROFILE_TABS[0]);
   return (
     <Layout>
       <NavigationBar title="Junho Yeo" subtitle="@_junhoyeo" />
@@ -14,6 +24,11 @@ const ProfilePage = () => {
         <DisplayName>Junho Yeo</DisplayName>
         <Username>@_junhoyeo</Username>
       </ProfileContainer>
+      <Tab
+        selected={currentTab}
+        items={PROFILE_TABS}
+        onChangeTab={(tab) => setCurrentTab(tab)}
+      />
     </Layout>
   );
 };
