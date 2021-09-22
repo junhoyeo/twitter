@@ -128,7 +128,12 @@ export const Retweet = ({ retweetObject, isOwner }) => {
 
   return (
     <React.Fragment>
-      <span>{retweetObject.creator.displayName} Retweeted</span>
+      <span>
+        {retweetObject.creator?.uid !== user?.uid
+          ? retweetObject.creator.displayName
+          : 'You'}{' '}
+        Retweeted
+      </span>
       <Link href={tweetLink}>
         <Container>
           <AvatarContainer>
