@@ -1,10 +1,13 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 import { ActivityIndicator } from '../../components/ActivityIndicator';
+import { AnimatedTweets } from '../../components/AnimatedTweets';
 import { Layout } from '../../components/Layout';
 import { NavigationBar } from '../../components/NavigationBar';
 import { LargeTweet } from '../../components/Tweet/LargeTweet';
+import { useTweets } from '../../hooks/useTweets';
 import { useFirebase } from '../../utils/firebase';
 
 const TweetPage = () => {
@@ -13,6 +16,8 @@ const TweetPage = () => {
   const firebase = useFirebase();
   const firestore = firebase.firestore();
   const user = firebase.auth().currentUser;
+
+  const moreTweets = useTweets();
 
   useEffect(() => {
     if (!firestore || !router.query.id) {
@@ -30,12 +35,22 @@ const TweetPage = () => {
     <Layout>
       <NavigationBar title="Tweet" />
       {typeof tweet !== 'undefined' ? (
-        <LargeTweet tweetObj={tweet} isOwner={tweet.creator.id === user.uid} />
+        <LargeTweet tweetObj={tweet} isOwner={tweet.creator.uid === user.uid} />
       ) : (
         <ActivityIndicator />
       )}
+      <Heading>More Tweets</Heading>
+      <AnimatedTweets user={user} tweets={moreTweets} />
     </Layout>
   );
 };
 
 export default TweetPage;
+
+const Heading = styled.h2`
+  margin: 0;
+  padding: 12px 16px;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 24px;
+`;

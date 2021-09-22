@@ -249,6 +249,7 @@ const Avatar = styled.img`
 `;
 
 const ProfileText = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;

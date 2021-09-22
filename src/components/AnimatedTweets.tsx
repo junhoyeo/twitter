@@ -50,7 +50,7 @@ export const AnimatedTweets: React.FC<Props> = ({ user, tweets }) => {
             >
               <Tweet
                 tweetObj={tweet}
-                isOwner={tweet.creator.id === user?.uid}
+                isOwner={tweet.creator.uid === user?.uid}
               />
             </AnimatedListItem>
           );
