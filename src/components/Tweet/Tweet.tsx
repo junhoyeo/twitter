@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
@@ -8,8 +9,10 @@ import styled, { css } from 'styled-components';
 import AddBookmarkIcon from '../../assets/add-bookmark.svg';
 import HeartOutlineIcon from '../../assets/heart-outline.svg';
 import HeartFilledIcon from '../../assets/heart-solid.svg';
+import LinkIcon from '../../assets/link.svg';
 import TrashIcon from '../../assets/trash.svg';
 import { bookmarksAtom } from '../../recoil/bookmarks';
+import { copyToClipboard } from '../../utils/clipboard';
 import { useFirebase } from '../../utils/firebase';
 import { MenuItem } from '../MenuItem';
 import { Modal } from '../Modal';
@@ -19,6 +22,7 @@ import { ExportButton } from './ExportButton';
 import { MoreButton } from './MoreButton';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
+  const router = useRouter();
   const firebase = useFirebase();
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
@@ -30,7 +34,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
   const isBookmarked =
     bookmarks.findIndex((bookmarked) => bookmarked.id === tweetObj.id) !== -1;
 
-  const onClickLike = () => {
+  const onClickLike = useCallback(() => {
     const isUndetermined = heartAnimationState === 'UNDETERMINED';
     setHeartAnimationState(!isUndetermined ? 'UNDETERMINED' : 'ANIMATED');
     if (isUndetermined) {
@@ -74,7 +78,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         ),
       );
     }
-  };
+  }, [tweetObj]);
 
   const onClickDelete = useCallback(async () => {
     if (!firebase) {
@@ -181,6 +185,13 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                             bookmarkedTweet.id !== tweetObj.id,
                         ),
                       );
+                }}
+              />
+              <MenuItem
+                icon={<LinkIcon />}
+                title="Copy link to Tweet"
+                onClick={() => {
+                  copyToClipboard(`${location.origin}/tweet/${tweetObj.id}`);
                 }}
               />
             </ExportButton>
