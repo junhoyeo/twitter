@@ -11,6 +11,7 @@ import HeartOutlineIcon from '../../assets/heart-outline.svg';
 import HeartFilledIcon from '../../assets/heart-solid.svg';
 import LinkIcon from '../../assets/link.svg';
 import TrashIcon from '../../assets/trash.svg';
+import { useRelativeTime } from '../../hooks/useRelativeTime';
 import { bookmarksAtom } from '../../recoil/bookmarks';
 import { copyToClipboard } from '../../utils/clipboard';
 import { useFirebase } from '../../utils/firebase';
@@ -24,10 +25,11 @@ import { MoreButton } from './MoreButton';
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
+  const user = firebase.auth().currentUser;
 
   const [heartAnimationState, setHeartAnimationState] = useState<
     'UNDETERMINED' | 'ANIMATED' | 'LIKED'
-  >(!tweetObj.likes?.includes('test') ? 'UNDETERMINED' : 'LIKED');
+  >(!tweetObj.likes?.includes(user?.uid) ? 'UNDETERMINED' : 'LIKED');
 
   const [bookmarks, setBookmarks] = useRecoilState(bookmarksAtom);
   const isBookmarked =
@@ -42,7 +44,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         .collection('tweets')
         .doc(tweetObj.id)
         .update({
-          likes: [...(tweetObj.likes || []), 'test'],
+          likes: [...(tweetObj.likes || []), user.uid],
         });
       setBookmarks((bookmarksToUpdate) =>
         bookmarksToUpdate.map((bookmarkedTweet) =>
@@ -50,7 +52,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
             ? bookmarkedTweet
             : {
                 ...bookmarkedTweet,
-                likes: [...(bookmarkedTweet.likes || []), 'test'],
+                likes: [...(bookmarkedTweet.likes || []), user.uid],
               },
         ),
       );
@@ -61,7 +63,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         .collection('tweets')
         .doc(tweetObj.id)
         .update({
-          likes: tweetObj.likes?.filter((userId) => userId !== 'test') || [],
+          likes: tweetObj.likes?.filter((userId) => userId !== user.uid) || [],
         });
       setBookmarks((bookmarksToUpdate) =>
         bookmarksToUpdate.map((bookmarkedTweet) =>
@@ -71,13 +73,28 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                 ...bookmarkedTweet,
                 likes:
                   bookmarkedTweet.likes?.filter(
-                    (userId) => userId !== 'test',
+                    (userId) => userId !== user.uid,
                   ) || [],
               },
         ),
       );
     }
   }, [tweetObj]);
+
+  const firestore = firebase.firestore();
+  const onClickRetweet = async () => {
+    const retweet = {
+      type: 'RETWEET',
+      createdAt: Date.now(),
+      creator: {
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      },
+      parent: tweetObj,
+    };
+    await firestore.collection('tweets').add(retweet);
+  };
 
   const onClickDelete = useCallback(async () => {
     if (!firebase) {
@@ -169,6 +186,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                 {tweetObj.likes?.length || 0}
               </LikeCount>
             </Likes>
+            <TemporaryButton onClick={onClickRetweet}>Retweet</TemporaryButton>
             <ExportButton>
               <MenuItem
                 icon={<AddBookmarkIcon />}
@@ -420,4 +438,10 @@ const HeartFilled = styled(HeartFilledIcon)`
   fill: rgb(249, 24, 128);
   width: 20px;
   height: 20px;
+`;
+
+const TemporaryButton = styled.button`
+  padding: 16px;
+  background-color: white;
+  color: black;
 `;
