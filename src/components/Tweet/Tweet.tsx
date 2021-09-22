@@ -1,8 +1,8 @@
+import * as DateFns from 'date-fns';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
@@ -22,7 +22,6 @@ import { ExportButton } from './ExportButton';
 import { MoreButton } from './MoreButton';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
-  const router = useRouter();
   const firebase = useFirebase();
   const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
@@ -108,6 +107,8 @@ export const Tweet = ({ tweetObj, isOwner }) => {
     }, 200);
   }, []);
 
+  const createdAt = useRelativeTime(tweetObj.createdAt);
+
   return (
     <React.Fragment>
       <Container>
@@ -127,7 +128,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                   <Username>{`@${tweetObj.creator?.uid}`}</Username>
                 </Link>
               </UsernameContainer>
-              <Metadata> · 5h</Metadata>
+              <Metadata> · {createdAt}</Metadata>
             </TopText>
             {isOwner && (
               <MoreButton>
