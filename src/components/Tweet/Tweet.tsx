@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import React, { useCallback, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
@@ -111,20 +112,29 @@ export const Tweet = ({ tweetObj, isOwner }) => {
         </AvatarContainer>
         <Content>
           <TopRow>
-            <span>
+            <TopText>
+              {/* <Link href={`/profile/${tweetObj.creator?.uid}`}> */}
+              {/* <ProfileText> */}
               <DisplayName>{tweetObj.creator?.displayName}</DisplayName>
-              <Metadata>{`@${tweetObj.creator?.uid}`} · 5h</Metadata>
-            </span>
-            {/* {isOwner && ( */}
-            <MoreButton>
-              <MenuItem
-                icon={<TrashIcon />}
-                title="Delete"
-                destructive
-                onClick={() => setDeleteModalOpen(true)}
-              />
-            </MoreButton>
-            {/* )} */}
+              <UsernameContainer>
+                <Username>{`@${tweetObj.creator?.uid}`}</Username>
+              </UsernameContainer>
+              {/* </ProfileText> */}
+              {/* </Link> */}
+              {/* <MetadataContainer> */}
+              <Metadata> · 5h</Metadata>
+              {/* </MetadataContainer> */}
+            </TopText>
+            {isOwner && (
+              <MoreButton>
+                <MenuItem
+                  icon={<TrashIcon />}
+                  title="Delete"
+                  destructive
+                  onClick={() => setDeleteModalOpen(true)}
+                />
+              </MoreButton>
+            )}
           </TopRow>
           <Paragraph>{tweetObj.text}</Paragraph>
           {tweetObj.attachmentUrl && (
@@ -224,24 +234,56 @@ const TopRow = styled.div`
   justify-content: space-between;
   align-items: center;
 `;
+const TopText = styled.div`
+  max-width: calc(100vw - 48px - 32px - 48px);
+  display: flex;
+  align-items: center;
+`;
+const ProfileText = styled.div`
+  display: flex;
+  align-items: center;
+`;
 const DisplayName = styled.span`
   white-space: nowrap;
   line-height: 20px;
-  min-width: 0px;
   color: rgba(217, 217, 217, 1);
+  flex-shrink: 0;
 
   font-weight: 700;
   font-size: 15px;
+`;
+const MetadataContainer = styled.div`
+  max-width: 100%;
+  display: flex;
+  align-items: center;
 `;
 const Metadata = styled.span`
   margin-left: 4px;
   color: rgb(110, 118, 125);
   line-height: 20px;
-  overflow-wrap: break-word;
-  min-width: 0px;
+  flex-shrink: 0;
 
   font-weight: 400;
   font-size: 15px;
+`;
+const UsernameContainer = styled.div`
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: rgb(110, 118, 125);
+`;
+const Username = styled.span`
+  margin-left: 4px;
+  color: rgb(110, 118, 125);
+  line-height: 20px;
+  font-weight: 400;
+  font-size: 15px;
+
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 const Content = styled.div`
