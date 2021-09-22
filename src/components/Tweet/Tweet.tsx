@@ -108,22 +108,22 @@ export const Tweet = ({ tweetObj, isOwner }) => {
     <React.Fragment>
       <Container>
         <AvatarContainer>
-          <Avatar src={tweetObj.creator?.photoURL} alt="avatar" />
+          <Link href={`/user/${tweetObj.creator?.uid}`}>
+            <Avatar src={tweetObj.creator?.photoURL} alt="avatar" />
+          </Link>
         </AvatarContainer>
         <Content>
           <TopRow>
             <TopText>
-              {/* <Link href={`/profile/${tweetObj.creator?.uid}`}> */}
-              {/* <ProfileText> */}
-              <DisplayName>{tweetObj.creator?.displayName}</DisplayName>
+              <Link href={`/user/${tweetObj.creator?.uid}`}>
+                <DisplayName>{tweetObj.creator?.displayName}</DisplayName>
+              </Link>
               <UsernameContainer>
-                <Username>{`@${tweetObj.creator?.uid}`}</Username>
+                <Link href={`/user/${tweetObj.creator?.uid}`}>
+                  <Username>{`@${tweetObj.creator?.uid}`}</Username>
+                </Link>
               </UsernameContainer>
-              {/* </ProfileText> */}
-              {/* </Link> */}
-              {/* <MetadataContainer> */}
               <Metadata> · 5h</Metadata>
-              {/* </MetadataContainer> */}
             </TopText>
             {isOwner && (
               <MoreButton>
@@ -221,6 +221,7 @@ const Avatar = styled.img`
   width: 48px;
   height: 48px;
   border-radius: 50%;
+  cursor: pointer;
 
   transition-property: background-color, box-shadow;
   transition-duration: 0.2s;
@@ -239,32 +240,15 @@ const TopText = styled.div`
   display: flex;
   align-items: center;
 `;
-const ProfileText = styled.div`
-  display: flex;
-  align-items: center;
-`;
 const DisplayName = styled.span`
   white-space: nowrap;
+  flex-shrink: 0;
+  cursor: pointer;
+
+  font-size: 15px;
+  font-weight: 700;
   line-height: 20px;
   color: rgba(217, 217, 217, 1);
-  flex-shrink: 0;
-
-  font-weight: 700;
-  font-size: 15px;
-`;
-const MetadataContainer = styled.div`
-  max-width: 100%;
-  display: flex;
-  align-items: center;
-`;
-const Metadata = styled.span`
-  margin-left: 4px;
-  color: rgb(110, 118, 125);
-  line-height: 20px;
-  flex-shrink: 0;
-
-  font-weight: 400;
-  font-size: 15px;
 `;
 const UsernameContainer = styled.div`
   max-width: 100%;
@@ -275,15 +259,25 @@ const UsernameContainer = styled.div`
 `;
 const Username = styled.span`
   margin-left: 4px;
-  color: rgb(110, 118, 125);
-  line-height: 20px;
-  font-weight: 400;
+  cursor: pointer;
+
   font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  color: rgb(110, 118, 125);
 
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+const Metadata = styled.span`
+  color: rgb(110, 118, 125);
+  line-height: 20px;
+  flex-shrink: 0;
+
+  font-weight: 400;
+  font-size: 15px;
 `;
 
 const Content = styled.div`
