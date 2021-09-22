@@ -132,99 +132,99 @@ export const Tweet = ({ tweetObj, isOwner }) => {
 
   return (
     <React.Fragment>
-      <Link href={tweetLink}>
-        <Container>
-          <AvatarContainer>
-            <Link href={`/user/${tweetObj.creator?.uid}`}>
-              <Avatar src={tweetObj.creator?.photoURL} alt="avatar" />
-            </Link>
-          </AvatarContainer>
-          <Content>
-            <TopRow>
-              <TopText>
+      <Container>
+        <AvatarContainer>
+          <Link href={`/user/${tweetObj.creator?.uid}`}>
+            <Avatar src={tweetObj.creator?.photoURL} alt="avatar" />
+          </Link>
+        </AvatarContainer>
+        <Content>
+          <TopRow>
+            <TopText>
+              <Link href={`/user/${tweetObj.creator?.uid}`}>
+                <DisplayName>{tweetObj.creator?.displayName}</DisplayName>
+              </Link>
+              <UsernameContainer>
                 <Link href={`/user/${tweetObj.creator?.uid}`}>
-                  <DisplayName>{tweetObj.creator?.displayName}</DisplayName>
+                  <Username>{`@${tweetObj.creator?.uid}`}</Username>
                 </Link>
-                <UsernameContainer>
-                  <Link href={`/user/${tweetObj.creator?.uid}`}>
-                    <Username>{`@${tweetObj.creator?.uid}`}</Username>
-                  </Link>
-                </UsernameContainer>
-                <Metadata> · {createdAt}</Metadata>
-              </TopText>
-              {isOwner && (
-                <MoreButton>
-                  <MenuItem
-                    icon={<TrashIcon />}
-                    title="Delete"
-                    destructive
-                    onClick={() => setDeleteModalOpen(true)}
-                  />
-                </MoreButton>
-              )}
-            </TopRow>
+              </UsernameContainer>
+              <Metadata> · {createdAt}</Metadata>
+            </TopText>
+            {isOwner && (
+              <MoreButton>
+                <MenuItem
+                  icon={<TrashIcon />}
+                  title="Delete"
+                  destructive
+                  onClick={() => setDeleteModalOpen(true)}
+                />
+              </MoreButton>
+            )}
+          </TopRow>
+          <Link href={tweetLink}>
             <Paragraph>{tweetObj.text}</Paragraph>
+          </Link>
+          <Link href={tweetLink}>
             {tweetObj.attachmentUrl && (
               <ImageContainer>
                 <Image src={tweetObj.attachmentUrl} />
               </ImageContainer>
             )}
-            <Actions>
-              <Likes>
-                <ActionCircle className="heart-circle">
-                  <HeartContainer onClick={onClickLike}>
-                    <HeartCenter>
-                      {heartAnimationState === 'UNDETERMINED' ? (
-                        <HeartOutline className="heart-outline" />
-                      ) : heartAnimationState === 'ANIMATED' ? (
-                        <HeartAnimation />
-                      ) : (
-                        <HeartFilled />
-                      )}
-                    </HeartCenter>
-                  </HeartContainer>
-                </ActionCircle>
-                <LikeCount
-                  className="like-count"
-                  liked={heartAnimationState !== 'UNDETERMINED'}
-                >
-                  {tweetObj.likes?.length || 0}
-                </LikeCount>
-              </Likes>
-              <TemporaryButton onClick={onClickRetweet}>
-                Retweet
-              </TemporaryButton>
-              <ExportButton>
-                <MenuItem
-                  icon={<AddBookmarkIcon />}
-                  title={
-                    !isBookmarked
-                      ? 'Add Tweet to Bookmarks'
-                      : 'Remove Tweet from Bookmarks'
-                  }
-                  onClick={() => {
-                    !isBookmarked
-                      ? setBookmarks([...bookmarks, tweetObj])
-                      : setBookmarks(
-                          bookmarks.filter(
-                            (bookmarkedTweet) =>
-                              bookmarkedTweet.id !== tweetObj.id,
-                          ),
-                        );
-                  }}
-                />
-                <MenuItem
-                  icon={<LinkIcon />}
-                  title="Copy link to Tweet"
-                  onClick={() => {
-                    copyToClipboard(tweetLink);
-                  }}
-                />
-              </ExportButton>
-            </Actions>
-          </Content>
-        </Container>
-      </Link>
+          </Link>
+          <Actions>
+            <Likes>
+              <ActionCircle className="heart-circle">
+                <HeartContainer onClick={onClickLike}>
+                  <HeartCenter>
+                    {heartAnimationState === 'UNDETERMINED' ? (
+                      <HeartOutline className="heart-outline" />
+                    ) : heartAnimationState === 'ANIMATED' ? (
+                      <HeartAnimation />
+                    ) : (
+                      <HeartFilled />
+                    )}
+                  </HeartCenter>
+                </HeartContainer>
+              </ActionCircle>
+              <LikeCount
+                className="like-count"
+                liked={heartAnimationState !== 'UNDETERMINED'}
+              >
+                {tweetObj.likes?.length || 0}
+              </LikeCount>
+            </Likes>
+            <TemporaryButton onClick={onClickRetweet}>Retweet</TemporaryButton>
+            <ExportButton>
+              <MenuItem
+                icon={<AddBookmarkIcon />}
+                title={
+                  !isBookmarked
+                    ? 'Add Tweet to Bookmarks'
+                    : 'Remove Tweet from Bookmarks'
+                }
+                onClick={() => {
+                  !isBookmarked
+                    ? setBookmarks([...bookmarks, tweetObj])
+                    : setBookmarks(
+                        bookmarks.filter(
+                          (bookmarkedTweet) =>
+                            bookmarkedTweet.id !== tweetObj.id,
+                        ),
+                      );
+                }}
+              />
+              <MenuItem
+                icon={<LinkIcon />}
+                title="Copy link to Tweet"
+                onClick={() => {
+                  copyToClipboard(tweetLink);
+                }}
+              />
+            </ExportButton>
+          </Actions>
+        </Content>
+      </Container>
       <Portal>
         <Modal
           isShown={isDeleteModalOpen}
