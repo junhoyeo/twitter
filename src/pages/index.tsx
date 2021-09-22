@@ -8,31 +8,14 @@ import { CreateTweetForm } from '../components/CreateTweetForm';
 import { Layout } from '../components/Layout';
 import { NavigationBar } from '../components/NavigationBar';
 
+import { useTweets } from '../hooks/useTweets';
+
 import { useFirebase } from '../utils/firebase';
 
 const Home = () => {
-  const [tweets, setTweets] = useState(undefined);
-
-  const firebase = useFirebase();
-  const firestore = firebase.firestore();
-  const auth = firebase.auth();
+  const auth = useFirebase('auth');
   const user = auth.currentUser;
-
-  useEffect(() => {
-    if (!firestore) {
-      return;
-    }
-    firestore
-      .collection('tweets')
-      .orderBy('createdAt', 'desc')
-      .onSnapshot((snapshot) => {
-        const tweetArray = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setTweets(tweetArray);
-      });
-  }, []);
+  const tweets = useTweets();
 
   return (
     <Layout>
