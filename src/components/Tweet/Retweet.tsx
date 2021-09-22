@@ -121,106 +121,112 @@ export const Retweet = ({ retweetObject, isOwner }) => {
   }, []);
 
   const createdAt = useRelativeTime(retweetObject.createdAt);
+  const tweetLink = useMemo(
+    () => `${location.origin}/tweet/${retweetObject.parent?.id}`,
+    [location.origin, retweetObject.parent?.id],
+  );
 
   return (
     <React.Fragment>
       <span>{retweetObject.creator.displayName} Retweeted</span>
-      <Container>
-        <AvatarContainer>
-          <Link href={`/user/${retweetObject.parent?.creator?.uid}`}>
-            <Avatar
-              src={retweetObject.parent?.creator?.photoURL}
-              alt="avatar"
-            />
-          </Link>
-        </AvatarContainer>
-        <Content>
-          <TopRow>
-            <TopText>
-              <Link href={`/user/${retweetObject.parent?.creator?.uid}`}>
-                <DisplayName>
-                  {retweetObject.parent?.creator?.displayName}
-                </DisplayName>
-              </Link>
-              <UsernameContainer>
+      <Link href={tweetLink}>
+        <Container>
+          <AvatarContainer>
+            <Link href={`/user/${retweetObject.parent?.creator?.uid}`}>
+              <Avatar
+                src={retweetObject.parent?.creator?.photoURL}
+                alt="avatar"
+              />
+            </Link>
+          </AvatarContainer>
+          <Content>
+            <TopRow>
+              <TopText>
                 <Link href={`/user/${retweetObject.parent?.creator?.uid}`}>
-                  <Username>{`@${retweetObject.parent?.creator?.uid}`}</Username>
+                  <DisplayName>
+                    {retweetObject.parent?.creator?.displayName}
+                  </DisplayName>
                 </Link>
-              </UsernameContainer>
-              <Metadata> · {createdAt}</Metadata>
-            </TopText>
-            {isOwner && (
-              <MoreButton>
-                <MenuItem
-                  icon={<TrashIcon />}
-                  title="Delete"
-                  destructive
-                  onClick={() => setDeleteModalOpen(true)}
-                />
-              </MoreButton>
+                <UsernameContainer>
+                  <Link href={`/user/${retweetObject.parent?.creator?.uid}`}>
+                    <Username>{`@${retweetObject.parent?.creator?.uid}`}</Username>
+                  </Link>
+                </UsernameContainer>
+                <Metadata> · {createdAt}</Metadata>
+              </TopText>
+              {isOwner && (
+                <MoreButton>
+                  <MenuItem
+                    icon={<TrashIcon />}
+                    title="Delete"
+                    destructive
+                    onClick={() => setDeleteModalOpen(true)}
+                  />
+                </MoreButton>
+              )}
+            </TopRow>
+            <Paragraph>{retweetObject.parent?.text}</Paragraph>
+            {retweetObject.parent?.attachmentUrl && (
+              <ImageContainer>
+                <Image src={retweetObject.parent?.attachmentUrl} />
+              </ImageContainer>
             )}
-          </TopRow>
-          <Paragraph>{retweetObject.parent?.text}</Paragraph>
-          {retweetObject.parent?.attachmentUrl && (
-            <ImageContainer>
-              <Image src={retweetObject.parent?.attachmentUrl} />
-            </ImageContainer>
-          )}
-          <Actions>
-            <Likes>
-              <ActionCircle className="heart-circle">
-                <HeartContainer onClick={onClickLike}>
-                  <HeartCenter>
-                    {heartAnimationState === 'UNDETERMINED' ? (
-                      <HeartOutline className="heart-outline" />
-                    ) : heartAnimationState === 'ANIMATED' ? (
-                      <HeartAnimation />
-                    ) : (
-                      <HeartFilled />
-                    )}
-                  </HeartCenter>
-                </HeartContainer>
-              </ActionCircle>
-              <LikeCount
-                className="like-count"
-                liked={heartAnimationState !== 'UNDETERMINED'}
-              >
-                {retweetObject.parent?.likes?.length || 0}
-              </LikeCount>
-            </Likes>
-            <TemporaryButton onClick={onClickRetweet}>Retweet</TemporaryButton>
-            <ExportButton>
-              <MenuItem
-                icon={<AddBookmarkIcon />}
-                title={
-                  !isBookmarked
-                    ? 'Add Tweet to Bookmarks'
-                    : 'Remove Tweet from Bookmarks'
-                }
-                onClick={() => {
-                  !isBookmarked
-                    ? setBookmarks([...bookmarks, retweetObject.parent])
-                    : setBookmarks(
-                        bookmarks.filter(
-                          (bookmarkedTweet) =>
-                            bookmarkedTweet.id !== retweetObject.parent?.id,
-                        ),
-                      );
-                }}
-              />
-              <MenuItem
-                icon={<LinkIcon />}
-                title="Copy link to Tweet"
-                onClick={() => {
-                  copyToClipboard(
-                    `${location.origin}/tweet/${retweetObject.parent?.id}`,
-                  );
-                }}
-              />
-            </ExportButton>
-          </Actions>
-        </Content>
-      </Container>
+            <Actions>
+              <Likes>
+                <ActionCircle className="heart-circle">
+                  <HeartContainer onClick={onClickLike}>
+                    <HeartCenter>
+                      {heartAnimationState === 'UNDETERMINED' ? (
+                        <HeartOutline className="heart-outline" />
+                      ) : heartAnimationState === 'ANIMATED' ? (
+                        <HeartAnimation />
+                      ) : (
+                        <HeartFilled />
+                      )}
+                    </HeartCenter>
+                  </HeartContainer>
+                </ActionCircle>
+                <LikeCount
+                  className="like-count"
+                  liked={heartAnimationState !== 'UNDETERMINED'}
+                >
+                  {retweetObject.parent?.likes?.length || 0}
+                </LikeCount>
+              </Likes>
+              <TemporaryButton onClick={onClickRetweet}>
+                Retweet
+              </TemporaryButton>
+              <ExportButton>
+                <MenuItem
+                  icon={<AddBookmarkIcon />}
+                  title={
+                    !isBookmarked
+                      ? 'Add Tweet to Bookmarks'
+                      : 'Remove Tweet from Bookmarks'
+                  }
+                  onClick={() => {
+                    !isBookmarked
+                      ? setBookmarks([...bookmarks, retweetObject.parent])
+                      : setBookmarks(
+                          bookmarks.filter(
+                            (bookmarkedTweet) =>
+                              bookmarkedTweet.id !== retweetObject.parent?.id,
+                          ),
+                        );
+                  }}
+                />
+                <MenuItem
+                  icon={<LinkIcon />}
+                  title="Copy link to Tweet"
+                  onClick={() => {
+                    copyToClipboard(tweetLink);
+                  }}
+                />
+              </ExportButton>
+            </Actions>
+          </Content>
+        </Container>
+      </Link>
       <Portal>
         <Modal
           isShown={isDeleteModalOpen}
@@ -242,6 +248,7 @@ const _Container = styled.div`
   padding: 12px 16px;
   display: flex;
   border-bottom: 1px solid rgb(47, 51, 54);
+  cursor: pointer;
 `;
 const Container = dynamic(async () => _Container, { ssr: false });
 

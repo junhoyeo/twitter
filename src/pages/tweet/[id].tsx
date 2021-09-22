@@ -37,7 +37,9 @@ const TweetPage = () => {
       {typeof tweet !== 'undefined' ? (
         <LargeTweet tweetObj={tweet} isOwner={tweet.creator.uid === user.uid} />
       ) : (
-        <ActivityIndicator />
+        <ActivityIndicatorContainer>
+          <ActivityIndicator />
+        </ActivityIndicatorContainer>
       )}
       <Heading>More Tweets</Heading>
       <AnimatedTweets user={user} tweets={moreTweets} />
@@ -53,4 +55,13 @@ const Heading = styled.h2`
   font-size: 20px;
   font-weight: 800;
   line-height: 24px;
+`;
+
+const ActivityIndicatorContainer = styled.div`
+  width: 100%;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
