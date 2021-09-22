@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { ActivityIndicator } from './ActivityIndicator';
 import { Tweet } from './Tweet';
+import { Retweet } from './Tweet/Retweet';
 
 type Props = {
   user: any;
@@ -48,10 +49,17 @@ export const AnimatedTweets: React.FC<Props> = ({ user, tweets }) => {
                 );
               }}
             >
-              <Tweet
-                tweetObj={tweet}
-                isOwner={tweet.creator.uid === user?.uid}
-              />
+              {tweet.type === 'RETWEET' ? (
+                <Retweet
+                  retweetObject={tweet}
+                  isOwner={tweet.creator.uid === user?.uid}
+                />
+              ) : (
+                <Tweet
+                  tweetObj={tweet}
+                  isOwner={tweet.creator.uid === user?.uid}
+                />
+              )}
             </AnimatedListItem>
           );
         })}
