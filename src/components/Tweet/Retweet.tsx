@@ -1,4 +1,3 @@
-import * as DateFns from 'date-fns';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -10,6 +9,7 @@ import AddBookmarkIcon from '../../assets/add-bookmark.svg';
 import HeartOutlineIcon from '../../assets/heart-outline.svg';
 import HeartFilledIcon from '../../assets/heart-solid.svg';
 import LinkIcon from '../../assets/link.svg';
+import RetweetIcon from '../../assets/retweet.svg';
 import TrashIcon from '../../assets/trash.svg';
 import { useRelativeTime } from '../../hooks/useRelativeTime';
 import { bookmarksAtom } from '../../recoil/bookmarks';
@@ -129,12 +129,17 @@ export const Retweet = ({ retweetObject, isOwner }) => {
   return (
     <React.Fragment>
       <Link href={tweetLink}>
-        <span style={{ cursor: 'pointer' }}>
-          {retweetObject.creator?.uid !== user?.uid
-            ? retweetObject.creator.displayName
-            : 'You'}{' '}
-          Retweeted
-        </span>
+        <Retweeted>
+          <LeftRetweetIconContainer>
+            <LeftRetweetIcon />
+          </LeftRetweetIconContainer>
+          <span>
+            {retweetObject.creator?.uid !== user?.uid
+              ? retweetObject.creator.displayName
+              : 'You'}{' '}
+            Retweeted
+          </span>
+        </Retweeted>
       </Link>
       <Container>
         <AvatarContainer>
@@ -250,9 +255,33 @@ export const Retweet = ({ retweetObject, isOwner }) => {
   );
 };
 
+const Retweeted = styled.div`
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 16px;
+  color: rgb(110, 118, 125);
+
+  display: flex;
+  align-items: center;
+`;
+const LeftRetweetIconContainer = styled.div`
+  flex-basis: 48px;
+  flex-grow: 0;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+const LeftRetweetIcon = styled(RetweetIcon)`
+  width: 16px;
+  height: 16px;
+  fill: rgb(110, 118, 125);
+`;
+
 const _Container = styled.div`
   width: 100%;
-  padding: 12px 16px;
+  padding: 4px 12px 16px;
   display: flex;
   border-bottom: 1px solid rgb(47, 51, 54);
   cursor: pointer;
