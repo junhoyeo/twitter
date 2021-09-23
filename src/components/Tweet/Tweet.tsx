@@ -1,4 +1,3 @@
-import * as DateFns from 'date-fns';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
@@ -21,6 +20,7 @@ import Portal from '../Portal';
 import { ActionCircle, ActionItem } from './Actions';
 import { ExportButton } from './ExportButton';
 import { MoreButton } from './MoreButton';
+import { RetweetButton } from './RetweetButton';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
@@ -194,7 +194,7 @@ export const Tweet = ({ tweetObj, isOwner }) => {
                 {tweetObj.likes?.length || 0}
               </LikeCount>
             </Likes>
-            <TemporaryButton onClick={onClickRetweet}>Retweet</TemporaryButton>
+            <RetweetButton onClick={onClickRetweet} />
             <ExportButton>
               <MenuItem
                 icon={<AddBookmarkIcon />}
@@ -447,10 +447,4 @@ const HeartFilled = styled(HeartFilledIcon)`
   fill: rgb(249, 24, 128);
   width: 20px;
   height: 20px;
-`;
-
-const TemporaryButton = styled.button`
-  padding: 16px;
-  background-color: white;
-  color: black;
 `;
