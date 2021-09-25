@@ -22,10 +22,10 @@ import { ActionCircle, ActionItem } from './Actions';
 import { ExportButton } from './ExportButton';
 import { MoreButton } from './MoreButton';
 import { RetweetButton } from './RetweetButton';
+import { useDelete } from './useDelete';
 
 export const Retweet = ({ retweetObject, isOwner }) => {
   const firebase = useFirebase();
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const user = firebase.auth().currentUser;
 
   const [heartAnimationState, setHeartAnimationState] = useState<
@@ -106,20 +106,8 @@ export const Retweet = ({ retweetObject, isOwner }) => {
     await firestore.collection('tweets').add(retweet);
   };
 
-  const onClickDelete = useCallback(async () => {
-    if (!firebase) {
-      return;
-    }
-
-    setDeleteModalOpen(false);
-    setTimeout(() => {
-      firebase
-        .firestore()
-        .doc(`tweets/${retweetObject.id}`)
-        .delete()
-        .catch(() => {});
-    }, 200);
-  }, []);
+  const { isDeleteModalOpen, setDeleteModalOpen, onClickDelete } =
+    useDelete(retweetObject);
 
   const createdAt = useRelativeTime(retweetObject.createdAt);
   const tweetLink = useMemo(

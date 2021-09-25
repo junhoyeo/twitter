@@ -21,10 +21,10 @@ import { ActionCircle, ActionItem } from './Actions';
 import { ExportButton } from './ExportButton';
 import { MoreButton } from './MoreButton';
 import { RetweetButton } from './RetweetButton';
+import { useDelete } from './useDelete';
 
 export const Tweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
   const user = firebase.auth().currentUser;
 
   const [heartAnimationState, setHeartAnimationState] = useState<
@@ -96,33 +96,8 @@ export const Tweet = ({ tweetObj, isOwner }) => {
     await firestore.collection('tweets').add(retweet);
   };
 
-  const onClickDelete = useCallback(async () => {
-    if (!firebase) {
-      return;
-    }
-
-    setDeleteModalOpen(false);
-    setTimeout(() => {
-      setBookmarks((bookmarksToUpdate) =>
-        bookmarksToUpdate.filter(
-          (bookmarkedTweet) => bookmarkedTweet.id !== tweetObj.id,
-        ),
-      );
-      firebase
-        .firestore()
-        .doc(`tweets/${tweetObj.id}`)
-        .delete()
-        .catch(() => {});
-
-      if (tweetObj.attachmentUrl) {
-        firebase
-          .storage()
-          .refFromURL(tweetObj.attachmentUrl)
-          .delete()
-          .catch(() => {});
-      }
-    }, 200);
-  }, []);
+  const { isDeleteModalOpen, setDeleteModalOpen, onClickDelete } =
+    useDelete(tweetObj);
 
   const createdAt = useRelativeTime(tweetObj.createdAt);
   const tweetLink = useMemo(
