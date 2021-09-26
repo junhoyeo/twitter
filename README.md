@@ -4,7 +4,7 @@
 ![](docs/screenshots/landing.gif)
 
 ## Home
-![](docs/screenshots/news.gif)
+![](docs/screenshots/home.gif)
 
 ### Responsive
 
