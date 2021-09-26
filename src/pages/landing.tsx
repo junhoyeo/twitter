@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import router from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
@@ -41,11 +42,17 @@ const LandingPage = () => {
         | typeof firebase.auth.GoogleAuthProvider
         | typeof firebase.auth.GithubAuthProvider,
     ) => {
-      await firebase
-        .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-      const authProvider = new AuthProvider();
-      await auth.signInWithPopup(authProvider);
+      try {
+        await firebase
+          .auth()
+          .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+        const authProvider = new AuthProvider();
+        await auth.signInWithPopup(authProvider);
+        router.push('/');
+      } catch (error) {
+        console.error(error);
+        window.alert('An unknown error has occurred - please try again later');
+      }
     },
     [],
   );
