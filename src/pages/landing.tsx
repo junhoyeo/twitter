@@ -47,7 +47,25 @@ const LandingPage = () => {
           .auth()
           .setPersistence(firebase.auth.Auth.Persistence.LOCAL);
         const authProvider = new AuthProvider();
-        await auth.signInWithPopup(authProvider);
+        const credentials = await auth.signInWithPopup(authProvider);
+        const user = credentials.user;
+
+        const previousUser = await firebase
+          .firestore()
+          .collection('user')
+          .where('uid', '==', user.uid)
+          .get();
+
+        if (!previousUser.docs.length) {
+          const userObj = {
+            joinedAt: Date.now(),
+            uid: user.uid,
+            displayName: user.displayName,
+            photoURL: user.photoURL,
+          };
+          await firebase.firestore().collection('user').add(userObj);
+        }
+
         router.push('/');
       } catch (error) {
         console.error(error);
