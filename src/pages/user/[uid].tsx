@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 
 import CalendarIcon from '../../assets/calendar.svg';
+import { ActivityIndicator } from '../../components/ActivityIndicator';
 import { AnimatedTweets } from '../../components/AnimatedTweets';
 import { Layout } from '../../components/Layout';
 import { NavigationBar } from '../../components/NavigationBar';
@@ -77,18 +78,26 @@ const ProfilePage = () => {
   return (
     <Layout>
       <NavigationBar title={user?.displayName} subtitle={subtitle} />
-      <CoverImage src="/images/profile-background.png" />
-      <ProfileContainer>
-        <ProfileImage src={user?.photoURL} />
-        <DisplayName>{user?.displayName}</DisplayName>
-        <Username>{`@${user?.uid}`}</Username>
-        <UserMetadata>
-          <CreatedAt>
-            <CalendarIcon />
-            {joinedAt}
-          </CreatedAt>
-        </UserMetadata>
-      </ProfileContainer>
+      <CoverImageContainer>
+        <CoverImage src="/images/profile-background.png" />
+      </CoverImageContainer>
+      {!!user ? (
+        <ProfileContainer>
+          <ProfileImage src={user?.photoURL} />
+          <DisplayName>{user?.displayName}</DisplayName>
+          <Username>{`@${user?.uid}`}</Username>
+          <UserMetadata>
+            <CreatedAt>
+              <CalendarIcon />
+              {joinedAt}
+            </CreatedAt>
+          </UserMetadata>
+        </ProfileContainer>
+      ) : (
+        <ActivityIndicatorContainer>
+          <ActivityIndicator />
+        </ActivityIndicatorContainer>
+      )}
       <Tab
         selected={currentTab}
         items={PROFILE_TABS}
@@ -103,9 +112,20 @@ const ProfilePage = () => {
 
 export default ProfilePage;
 
+const CoverImageContainer = styled.div`
+  width: 100%;
+  padding-bottom: 33%;
+  position: relative;
+  z-index: -1;
+`;
 const CoverImage = styled.img`
   width: 100%;
-  aspect-ratio: 3;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   object-fit: cover;
 `;
 
@@ -116,6 +136,7 @@ const ProfileImage = styled.img`
   margin-top: -18%;
   width: 140px;
   height: 140px;
+  z-index: 8;
 
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.04);
@@ -156,4 +177,13 @@ const CreatedAt = styled.span`
     height: 18.75px;
     fill: rgb(110, 118, 125);
   }
+`;
+
+const ActivityIndicatorContainer = styled.div`
+  width: 100%;
+  height: 160px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

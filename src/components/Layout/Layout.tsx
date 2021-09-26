@@ -87,13 +87,13 @@ const Container = styled.div`
 
 const SideBar = styled(RightSideBar)`
   margin-right: 10px;
-  width: 350px;
+  width: 350px !important;
 
   @media (max-width: 1078px) {
-    width: 290px;
+    width: 290px !important;
   }
 
   @media (max-width: 990px) {
-    display: none;
+    display: none !important;
   }
 `;
