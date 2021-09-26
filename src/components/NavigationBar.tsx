@@ -31,6 +31,14 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid rgb(47, 51, 54);
+
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+  z-index: 999;
 `;
 
 const Header = styled.div`

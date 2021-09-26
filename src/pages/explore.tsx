@@ -27,18 +27,23 @@ const ExplorePage = () => {
 
   return (
     <Layout>
-      <NavigationBar />
-      <VideoBanner
-        title="The journey of the world's open source code to the Arctic - GitHub Arctic Code Vault"
-        createdAt="LIVE"
-        profile={{
-          name: 'GitHub',
-          avatar: '/images/github-logo-32px.png',
-          verified: true,
-        }}
-        poster="/videos/github-arctic-code-vault.png"
-        src="/videos/github-arctic-code-vault.mp4"
-      />
+      <NavigationBar title="Explore" />
+      <a
+        href="https://github.blog/2020-07-16-github-archive-program-the-journey-of-the-worlds-open-source-code-to-the-arctic/"
+        target="_blank"
+      >
+        <VideoBanner
+          title="The journey of the world's open source code to the Arctic - GitHub Arctic Code Vault"
+          createdAt="LIVE"
+          profile={{
+            name: 'GitHub',
+            avatar: '/images/github-logo-32px.png',
+            verified: true,
+          }}
+          poster="/videos/github-arctic-code-vault.png"
+          src="/videos/github-arctic-code-vault.mp4"
+        />
+      </a>
       <AnimatePresence>
         {typeof news === 'undefined' && <ActivityIndicator />}
         {news?.map((newsItem, index) => {
