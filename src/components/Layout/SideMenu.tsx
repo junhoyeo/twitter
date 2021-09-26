@@ -47,7 +47,8 @@ const sideMenuItems = [
 ];
 
 export const SideMenu = () => {
-  const { asPath: pathname } = useRouter();
+  const router = useRouter();
+  const { asPath: pathname } = router;
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
 
   const firebase = useFirebase();
@@ -76,10 +77,31 @@ export const SideMenu = () => {
                 );
               })}
             </SidemenuList>
-            <TweetButton onClick={() => setModalOpen(true)} type="button">
+            <TweetButton
+              onClick={() => {
+                if (!!user) {
+                  setModalOpen(true);
+                } else {
+                  router.push('/landing');
+                }
+              }}
+              type="button"
+            >
               <Desktop>Tweet</Desktop>
               <WriteTweetIcon />
             </TweetButton>
+            {user && (
+              <Desktop>
+                <LogoutButton
+                  onClick={() => {
+                    firebase.auth().signOut();
+                    router.reload();
+                  }}
+                >
+                  Log out
+                </LogoutButton>
+              </Desktop>
+            )}
           </Sticky>
         </Container>
       </Wrapper>
@@ -200,8 +222,6 @@ const TweetButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  border: 1px solid black;
   border-radius: 45px;
 
   &:hover {
@@ -240,4 +260,11 @@ const WriteTweetIcon = styled(WriteIcon)`
   @media (max-width: 1265px) {
     display: block;
   }
+`;
+
+const LogoutButton = styled.button`
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 16px;
+  color: rgb(110, 118, 125);
 `;
