@@ -52,18 +52,23 @@ const LandingPage = () => {
 
         const previousUser = await firebase
           .firestore()
-          .collection('user')
-          .where('uid', '==', user.uid)
+          .collection('users')
+          .doc(user.uid)
           .get();
 
-        if (!previousUser.docs.length) {
+        if (!previousUser.exists) {
           const userObj = {
             joinedAt: Date.now(),
             uid: user.uid,
+            username: user.uid,
             displayName: user.displayName,
             photoURL: user.photoURL,
           };
-          await firebase.firestore().collection('user').add(userObj);
+          await firebase
+            .firestore()
+            .collection('users')
+            .doc(user.uid)
+            .set(userObj);
         }
 
         router.push('/');

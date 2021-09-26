@@ -23,8 +23,21 @@ const ProfilePage = () => {
   const [myTweets, setMyTweets] = useState(undefined);
 
   const firebase = useFirebase();
-  const [firestore, auth] = [firebase.firestore(), firebase.auth()];
-  const user = auth.currentUser;
+  const [firestore] = [firebase.firestore(), firebase.auth()];
+
+  const router = useRouter();
+  const [user, setUser] = useState<any>();
+  useEffect(() => {
+    if (!firestore || !router.query.uid) {
+      return;
+    }
+    const userId = router.query.uid as string;
+    firestore
+      .collection('users')
+      .doc(userId)
+      .get()
+      .then((snapshot) => setUser(snapshot.data()));
+  }, [router.query.uid]);
 
   const subtitle = useMemo(() => {
     if (typeof myTweets !== 'undefined') {
@@ -36,29 +49,28 @@ const ProfilePage = () => {
     return `@${user.uid}`;
   }, [myTweets, user]);
 
-  const router = useRouter();
   useEffect(() => {
-    if (!firestore) {
+    if (!firestore || !user || !user.uid) {
       return;
     }
-    // firestore
-    //   .collection('tweets')
-    //   .where('creator.uid', '==', user.uid)
-    //   .orderBy('createdAt', 'desc')
-    //   .onSnapshot((snapshot) => {
-    //     const tweetArray = snapshot.docs.map((doc) => ({
-    //       id: doc.id,
-    //       ...doc.data(),
-    //     }));
-    //     setMyTweets(tweetArray);
-    //   });
-  }, []);
+    firestore
+      .collection('tweets')
+      .where('creator.uid', '==', user.uid)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot((snapshot) => {
+        const tweetArray = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setMyTweets(tweetArray);
+      });
+  }, [user]);
 
-  const createdAt = useMemo(() => {
-    if (!user || !user.metadata?.creationTime) {
+  const joinedAt = useMemo(() => {
+    if (!user || !user.joinedAt) {
       return undefined;
     }
-    const createdTime = new Date(user.metadata.creationTime);
+    const createdTime = new Date(user.joinedAt);
     return `Joined ${DateFns.format(createdTime, 'MMMM yyyy')}`;
   }, [user]);
 
@@ -73,7 +85,7 @@ const ProfilePage = () => {
         <UserMetadata>
           <CreatedAt>
             <CalendarIcon />
-            {createdAt}
+            {joinedAt}
           </CreatedAt>
         </UserMetadata>
       </ProfileContainer>
