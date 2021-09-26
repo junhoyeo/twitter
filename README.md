@@ -1,4 +1,28 @@
-# Twitter
+# Animated Twitter Clone
 
-## 어려웠던 점
-1. `transform: translate(...)`가 적용된 엘리먼트의 자식 트리에 속한 엘리먼트에 `position: fixed` 스타일이 적용된 경우 작동하지 않아 모달이 깨지는 문제가 있었음. `Portal`을 구현해서 해결함.
+## Landing Page
+![](docs/screenshots/landing.gif)
+
+## Home
+![](docs/screenshots/news.gif)
+
+### Responsive
+
+| iPad | iPhone |
+| :---: | :---: |
+| <img src="docs/screenshots/home-ipad.png" width="50%"/> | <img src="docs/screenshots/home-iphone.png" width="50%"/> |
+
+## Like a tweet
+![](docs/screenshots/like-a-tweet.gif)
+
+## Retweet a previous tweet
+![](docs/screenshots/retweet.gif)
+
+## Tweet Detail
+![](docs/screenshots/detail.gif)
+
+## User Profile
+![](docs/screenshots/profile.gif)
+
+## News
+![](docs/screenshots/news.gif)
