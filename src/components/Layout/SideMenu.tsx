@@ -1,6 +1,6 @@
 import { useRouter } from 'next/dist/client/router';
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import BookmarksOutlineIcon from '../../assets/sidemenu/bookmarks-outline.svg';
@@ -13,6 +13,10 @@ import ProfileOutlineIcon from '../../assets/sidemenu/profile-outline.svg';
 import ProfileSolidIcon from '../../assets/sidemenu/profile-solid.svg';
 import TwitterLogoIcon from '../../assets/twitter.svg';
 import WriteIcon from '../../assets/write.svg';
+import { useFirebase } from '../../utils/firebase';
+import { CreateModal } from '../CreateModal';
+import { Modal } from '../Modal';
+import Portal from '../Portal';
 import { SideMenuItem } from './SideMenuItem';
 
 const sideMenuItems = [
@@ -44,32 +48,49 @@ const sideMenuItems = [
 
 export const SideMenu = () => {
   const { asPath: pathname } = useRouter();
+  const [isModalOpen, setModalOpen] = useState<boolean>(false);
+
+  const firebase = useFirebase();
+  const user = firebase.auth().currentUser;
 
   return (
-    <Wrapper>
-      <Container>
-        <Sticky>
-          {/* FIXME: move to /landing if not logged in */}
-          <Link href="/">
-            <TwitterLogoContainer>
-              <TwitterLogo />
-            </TwitterLogoContainer>
-          </Link>
-          <SidemenuList>
-            {sideMenuItems.map((props) => {
-              const selected = pathname === props.path;
-              return (
-                <SideMenuItem key={props.path} selected={selected} {...props} />
-              );
-            })}
-          </SidemenuList>
-          <TweetButton type="button">
-            <Desktop>Tweet</Desktop>
-            <WriteTweetIcon />
-          </TweetButton>
-        </Sticky>
-      </Container>
-    </Wrapper>
+    <React.Fragment>
+      <Wrapper>
+        <Container>
+          <Sticky>
+            {/* FIXME: move to /landing if not logged in */}
+            <Link href="/">
+              <TwitterLogoContainer>
+                <TwitterLogo />
+              </TwitterLogoContainer>
+            </Link>
+            <SidemenuList>
+              {sideMenuItems.map((props) => {
+                const selected = pathname === props.path;
+                return (
+                  <SideMenuItem
+                    key={props.path}
+                    selected={selected}
+                    {...props}
+                  />
+                );
+              })}
+            </SidemenuList>
+            <TweetButton onClick={() => setModalOpen(true)} type="button">
+              <Desktop>Tweet</Desktop>
+              <WriteTweetIcon />
+            </TweetButton>
+          </Sticky>
+        </Container>
+      </Wrapper>
+      <Portal>
+        <CreateModal
+          isShown={isModalOpen}
+          onDismiss={() => setModalOpen(false)}
+          user={user}
+        />
+      </Portal>
+    </React.Fragment>
   );
 };
 

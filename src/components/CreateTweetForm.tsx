@@ -16,8 +16,9 @@ import { useFirebase } from '../utils/firebase';
 
 type Props = {
   user: firebase.User;
+  onSuccess?: () => void;
 };
-export const CreateTweetForm: React.FC<Props> = ({ user }) => {
+export const CreateTweetForm: React.FC<Props> = ({ user, ...props }) => {
   const [tweet, setTweet] = useState('');
   const [isDraftInputDirty, setDraftInputDirty] = useState<boolean>(false);
 
@@ -65,6 +66,9 @@ export const CreateTweetForm: React.FC<Props> = ({ user }) => {
     await firestore.collection('tweets').add(tweetObj);
     setTweet('');
     setAttachment('');
+    if (props.onSuccess) {
+      props.onSuccess();
+    }
   };
 
   const onChange = (event) => {
