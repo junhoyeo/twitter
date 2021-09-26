@@ -5,8 +5,12 @@ import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
 import CrossIcon from '../assets/cross.svg';
+import EmojiIcon from '../assets/emoji.svg';
+import GifIcon from '../assets/gif.svg';
 import GlobeIcon from '../assets/globe.svg';
 import PhotoSelectIcon from '../assets/picture.svg';
+import PollIcon from '../assets/poll.svg';
+import ScheduleIcon from '../assets/schedule.svg';
 
 import { useFirebase } from '../utils/firebase';
 
@@ -129,6 +133,10 @@ export const CreateTweetForm: React.FC<Props> = ({ user }) => {
               style={{ display: 'none' }}
             />
             <PhotoSelectIcon onClick={() => fileInputRef?.current.click()} />
+            <GifIcon />
+            <PollIcon />
+            <EmojiIcon />
+            <ScheduleIcon />
           </Toolbar>
           <SubmitButton disabled={submitDisabled}>Tweet</SubmitButton>
         </ToolbarContainer>
@@ -222,6 +230,12 @@ const Toolbar = styled.div`
     width: 20px;
     height: 20px;
     cursor: pointer;
+
+    &:not(:first-of-type) {
+      margin-left: 16px;
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
   }
 `;
 
