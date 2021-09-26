@@ -26,10 +26,12 @@ import { useDelete } from './useDelete';
 
 export const LargeTweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
+  const user = firebase.auth().currentUser;
 
   const [heartAnimationState, setHeartAnimationState] = useState<
     'UNDETERMINED' | 'ANIMATED' | 'LIKED'
-  >(!tweetObj.likes?.includes('test') ? 'UNDETERMINED' : 'LIKED');
+  >(!tweetObj.likes?.includes(user?.uid) ? 'UNDETERMINED' : 'LIKED');
+  const [likes, setLikes] = useState<number>(tweetObj.likes?.length);
 
   const [bookmarks, setBookmarks] = useRecoilState(bookmarksAtom);
   const isBookmarked =
@@ -44,15 +46,16 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
         .collection('tweets')
         .doc(tweetObj.id)
         .update({
-          likes: [...(tweetObj.likes || []), 'test'],
+          likes: [...(tweetObj.likes || []), user.uid],
         });
+      setLikes((likes) => likes + 1);
       setBookmarks((bookmarksToUpdate) =>
         bookmarksToUpdate.map((bookmarkedTweet) =>
           bookmarkedTweet.id !== tweetObj.id
             ? bookmarkedTweet
             : {
                 ...bookmarkedTweet,
-                likes: [...(bookmarkedTweet.likes || []), 'test'],
+                likes: [...(bookmarkedTweet.likes || []), user.uid],
               },
         ),
       );
@@ -63,8 +66,9 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
         .collection('tweets')
         .doc(tweetObj.id)
         .update({
-          likes: tweetObj.likes?.filter((userId) => userId !== 'test') || [],
+          likes: tweetObj.likes?.filter((userId) => userId !== user.uid) || [],
         });
+      setLikes((likes) => likes - 1);
       setBookmarks((bookmarksToUpdate) =>
         bookmarksToUpdate.map((bookmarkedTweet) =>
           bookmarkedTweet.id !== tweetObj.id
@@ -73,7 +77,7 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
                 ...bookmarkedTweet,
                 likes:
                   bookmarkedTweet.likes?.filter(
-                    (userId) => userId !== 'test',
+                    (userId) => userId !== user.uid,
                   ) || [],
               },
         ),
@@ -81,7 +85,6 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
     }
   }, [tweetObj]);
 
-  const user = firebase.auth().currentUser;
   const firestore = firebase.firestore();
   const onClickRetweet = async () => {
     const retweet = {
@@ -166,7 +169,7 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
                 className="like-count"
                 liked={heartAnimationState !== 'UNDETERMINED'}
               >
-                {tweetObj.likes?.length || 0}
+                {likes || 0}
               </LikeCount>
             </Likes>
             <RetweetButton onClick={onClickRetweet} />

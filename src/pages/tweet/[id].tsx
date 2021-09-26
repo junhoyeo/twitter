@@ -35,7 +35,10 @@ const TweetPage = () => {
     <Layout>
       <NavigationBar title="Tweet" />
       {typeof tweet !== 'undefined' ? (
-        <LargeTweet tweetObj={tweet} isOwner={tweet.creator.uid === user.uid} />
+        <LargeTweet
+          tweetObj={{ ...tweet, id: router.query.id }}
+          isOwner={tweet.creator.uid === user.uid}
+        />
       ) : (
         <ActivityIndicatorContainer>
           <ActivityIndicator />
