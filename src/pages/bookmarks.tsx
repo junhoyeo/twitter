@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import React, { useMemo } from 'react';
 import { useRecoilValueLoadable } from 'recoil';
 import styled from 'styled-components';
@@ -26,6 +27,9 @@ const BookmarksPage = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Bookmarks / Twitter</title>
+      </Head>
       <NavigationBar title="Bookmarks" subtitle={subtitle} />
       {bookmarks.state !== 'loading' && bookmarks.contents.length === 0 && (
         <EmptyMessage />

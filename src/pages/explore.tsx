@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as DateFns from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
+import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
@@ -27,6 +28,9 @@ const ExplorePage = () => {
 
   return (
     <Layout>
+      <Head>
+        <title>Explore / Twitter</title>
+      </Head>
       <NavigationBar title="Explore" />
       <a
         href="https://github.blog/2020-07-16-github-archive-program-the-journey-of-the-worlds-open-source-code-to-the-arctic/"

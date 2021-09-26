@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 import router from 'next/router';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
@@ -82,6 +83,9 @@ const LandingPage = () => {
 
   return (
     <Page>
+      <Head>
+        <title>Twitter. It’s what’s happening / Twitter</title>
+      </Head>
       <Container style={{ height: containerHeight }}>
         <Content>
           <Section

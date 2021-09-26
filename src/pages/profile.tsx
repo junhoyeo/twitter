@@ -1,24 +1,7 @@
-import * as DateFns from 'date-fns';
 import { useRouter } from 'next/router';
-import React, { useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
-
-import CalendarIcon from '../assets/calendar.svg';
-
-import { AnimatedTweets } from '../components/AnimatedTweets';
-import { Layout } from '../components/Layout';
-import { NavigationBar } from '../components/NavigationBar';
-import { Tab } from '../components/Tab';
+import { useEffect } from 'react';
 
 import { useFirebase } from '../utils/firebase';
-
-type ProfileTab = 'Tweets' | 'Tweets & replies' | 'Media' | 'Likes';
-const PROFILE_TABS: ProfileTab[] = [
-  'Tweets',
-  'Tweets & replies',
-  'Media',
-  'Likes',
-];
 
 const ProfilePage = () => {
   const firebase = useFirebase();

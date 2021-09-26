@@ -1,4 +1,5 @@
 import * as DateFns from 'date-fns';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
@@ -77,6 +78,11 @@ const ProfilePage = () => {
 
   return (
     <Layout>
+      {!!user && (
+        <Head>
+          <title>{`${user?.displayName} / Twitter`}</title>
+        </Head>
+      )}
       <NavigationBar title={user?.displayName} subtitle={subtitle} />
       <CoverImageContainer>
         <CoverImage src="/images/profile-background.png" />
