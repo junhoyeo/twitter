@@ -12,11 +12,19 @@
 | :---: | :---: |
 | <img src="docs/screenshots/home-ipad.png" width="50%"/> | <img src="docs/screenshots/home-iphone.png" width="50%"/> |
 
+## Create a tweet
+
+![](./docs/screenshots/create-via-form.gif)
+![](./docs/screenshots/create-via-modal.gif)
+
 ## Like a tweet
 ![](docs/screenshots/like-a-tweet.gif)
 
 ## Retweet a previous tweet
 ![](docs/screenshots/retweet.gif)
+
+## Delete a tweet
+![](docs/screenshots/delete.gif)
 
 ## Tweet Detail
 ![](docs/screenshots/detail.gif)

@@ -63,7 +63,7 @@ const Background = styled(motion.div)`
 const Container = styled(motion.div)`
   padding: 32px;
   max-height: 100%;
-  max-width: 80vw;
+  max-width: 560px;
   width: 100%;
   border-radius: 16px;
 
@@ -71,6 +71,10 @@ const Container = styled(motion.div)`
   flex-direction: column;
   background-color: rgba(0, 0, 0, 1);
   cursor: default;
+
+  @media (max-width: 900px) {
+    max-width: 80vw;
+  }
 `;
 const Title = styled.span`
   margin-bottom: 8px;
