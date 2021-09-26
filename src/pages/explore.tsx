@@ -88,11 +88,13 @@ const AnimatedListItem = styled(motion.li)`
 const Container = styled.div`
   padding: 12px 16px;
   display: flex;
+  width: 100%;
 `;
 const Content = styled.div`
   display: flex;
   flex-direction: column;
   margin-right: 12px;
+  flex: 1;
 `;
 const Title = styled.span`
   font-weight: 700;
@@ -101,6 +103,13 @@ const Title = styled.span`
   color: rgba(217, 217, 217, 1);
   margin-bottom: 2px;
   margin-top: 2px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 `;
 const Metadata = styled.span`
   color: rgb(110, 118, 125);
@@ -115,6 +124,13 @@ const Description = styled.span`
   font-weight: 400;
   font-size: 15px;
   line-height: 20px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  word-break: break-all;
 `;
 const Image = styled.img`
   width: 85px;
