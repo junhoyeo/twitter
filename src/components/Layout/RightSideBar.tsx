@@ -11,30 +11,57 @@ export const RightSideBar: React.FC<Props> = (props) => {
   const [isFocused, setFocused] = useState<boolean>(false);
 
   return (
-    <Container {...props}>
-      <Sticky>
-        <SearchBarContainer focused={isFocused}>
-          <SearchIcon />
-          <SearchBarInput
-            onFocus={() => setFocused(true)}
-            onBlur={() => setFocused(false)}
-            placeholder="Search Twitter"
-          />
-        </SearchBarContainer>
-      </Sticky>
-      <TrendsForYou />
-      <WhoToFollow />
-    </Container>
+    <Wrapper {...props}>
+      <Container>
+        <Sticky>
+          <SearchBarFixed>
+            <SearchBarContainer focused={isFocused}>
+              <SearchIcon />
+              <SearchBarInput
+                onFocus={() => setFocused(true)}
+                onBlur={() => setFocused(false)}
+                placeholder="Search Twitter"
+              />
+            </SearchBarContainer>
+          </SearchBarFixed>
+          <Scroll>
+            <TrendsForYou />
+            <WhoToFollow />
+          </Scroll>
+        </Sticky>
+      </Container>
+    </Wrapper>
   );
 };
 
+const Wrapper = styled.div`
+  display: flex;
+  position: relative;
+`;
 const Container = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  position: sticky;
 `;
 
 const Sticky = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+  height: 100vh;
+`;
+
+const Scroll = styled.div`
+  overflow-y: auto;
+`;
+
+const SearchBarFixed = styled.div`
   margin-bottom: 12px;
   width: 100%;
   height: 53px;
