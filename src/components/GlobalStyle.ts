@@ -94,4 +94,19 @@ export const GlobalStyle = createGlobalStyle`
     background-color: transparent;
     cursor: pointer;
   }
+
+  .Toastify__toast.Toastify__toast-theme--light.Toastify__toast--default {
+    min-height: unset;
+    padding: 16px;
+    background-color: rgb(29, 155, 240);
+  }
+
+  .Toastify__toast-body {
+    margin: 0;
+    padding: 0;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 20px;
+    color: rgb(255, 255, 255);
+  }
 `;

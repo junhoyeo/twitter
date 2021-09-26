@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React, { useCallback, useMemo, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useRecoilState } from 'recoil';
 import styled, { css } from 'styled-components';
 
@@ -104,6 +105,7 @@ export const Retweet = ({ retweetObject, isOwner }) => {
       parent: retweetObject.parent,
     };
     await firestore.collection('tweets').add(retweet);
+    toast('This tweet was retweeted.');
   };
 
   const { isDeleteModalOpen, setDeleteModalOpen, onClickDelete } =

@@ -1,6 +1,7 @@
 import firebase from 'firebase/app';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
+import { toast } from 'react-toastify';
 import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -66,6 +67,7 @@ export const CreateTweetForm: React.FC<Props> = ({ user, ...props }) => {
     await firestore.collection('tweets').add(tweetObj);
     setTweet('');
     setAttachment('');
+    toast('Your tweet was sent.');
     if (props.onSuccess) {
       props.onSuccess();
     }

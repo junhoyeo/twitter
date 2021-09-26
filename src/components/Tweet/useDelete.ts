@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { toast } from 'react-toastify';
 import { useSetRecoilState } from 'recoil';
 
 import { bookmarksAtom } from '../../recoil/bookmarks';
@@ -34,6 +35,7 @@ export const useDelete = (tweetObj) => {
           .delete()
           .catch(() => {});
       }
+      toast('Your tweet was deleted.');
     }, 200);
   }, []);
 
