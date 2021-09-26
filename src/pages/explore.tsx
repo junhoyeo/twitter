@@ -59,23 +59,31 @@ const ExplorePage = () => {
               }}
               transition={{ ease: 'linear' }}
             >
-              <Container>
-                <Content>
-                  <Metadata>
-                    NAVER 뉴스 ·{' '}
-                    {DateFns.formatDistanceToNow(new Date(newsItem.pubDate))}
-                  </Metadata>
-                  <Title dangerouslySetInnerHTML={{ __html: newsItem.title }} />
-                  <Description
-                    dangerouslySetInnerHTML={{ __html: newsItem.description }}
+              <a
+                href={newsItem.link}
+                target="_blank"
+                style={{ cursor: 'pointer' }}
+              >
+                <Container>
+                  <Content>
+                    <Metadata>
+                      NAVER 뉴스 ·{' '}
+                      {DateFns.formatDistanceToNow(new Date(newsItem.pubDate))}
+                    </Metadata>
+                    <Title
+                      dangerouslySetInnerHTML={{ __html: newsItem.title }}
+                    />
+                    <Description
+                      dangerouslySetInnerHTML={{ __html: newsItem.description }}
+                    />
+                  </Content>
+                  <Image
+                    src={`https://source.unsplash.com/random?sig=${hashCode(
+                      newsItem.originallink,
+                    )}`}
                   />
-                </Content>
-                <Image
-                  src={`https://source.unsplash.com/random?sig=${hashCode(
-                    newsItem.originallink,
-                  )}`}
-                />
-              </Container>
+                </Container>
+              </a>
             </AnimatedListItem>
           );
         })}
