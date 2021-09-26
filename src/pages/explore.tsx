@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as DateFns from 'date-fns';
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -60,6 +61,10 @@ const ExplorePage = () => {
             >
               <Container>
                 <Content>
+                  <Metadata>
+                    NAVER 뉴스 ·{' '}
+                    {DateFns.formatDistanceToNow(new Date(newsItem.pubDate))}
+                  </Metadata>
                   <Title dangerouslySetInnerHTML={{ __html: newsItem.title }} />
                   <Description
                     dangerouslySetInnerHTML={{ __html: newsItem.description }}
@@ -113,8 +118,8 @@ const Title = styled.span`
 `;
 const Metadata = styled.span`
   color: rgb(110, 118, 125);
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 13px;
+  line-height: 16px;
   padding-left: 4px;
   padding-right: 4px;
 `;
