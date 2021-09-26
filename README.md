@@ -34,3 +34,6 @@
 
 ## News
 ![](docs/screenshots/news.gif)
+
+## Bookmarks
+![](docs/screenshots/bookmarks.png)
