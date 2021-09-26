@@ -1,4 +1,5 @@
 # Animated Twitter Clone
+[You can vote for me in Nomad Coders](https://nomadcoders.co/community/thread/1224)
 
 ## Landing Page
 ![](docs/screenshots/landing.gif)
