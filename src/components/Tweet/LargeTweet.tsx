@@ -20,10 +20,11 @@ import Portal from '../Portal';
 import { ActionCircle, ActionItem } from './Actions';
 import { ExportButton } from './ExportButton';
 import { MoreButton } from './MoreButton';
+import { RetweetButton } from './RetweetButton';
+import { useDelete } from './useDelete';
 
 export const LargeTweet = ({ tweetObj, isOwner }) => {
   const firebase = useFirebase();
-  const [isDeleteModalOpen, setDeleteModalOpen] = useState<boolean>(false);
 
   const [heartAnimationState, setHeartAnimationState] = useState<
     'UNDETERMINED' | 'ANIMATED' | 'LIKED'
@@ -79,33 +80,23 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
     }
   }, [tweetObj]);
 
-  const onClickDelete = useCallback(async () => {
-    if (!firebase) {
-      return;
-    }
-
-    setDeleteModalOpen(false);
-    setTimeout(() => {
-      setBookmarks((bookmarksToUpdate) =>
-        bookmarksToUpdate.filter(
-          (bookmarkedTweet) => bookmarkedTweet.id !== tweetObj.id,
-        ),
-      );
-      firebase
-        .firestore()
-        .doc(`tweets/${tweetObj.id}`)
-        .delete()
-        .catch(() => {});
-
-      if (tweetObj.attachmentUrl) {
-        firebase
-          .storage()
-          .refFromURL(tweetObj.attachmentUrl)
-          .delete()
-          .catch(() => {});
-      }
-    }, 200);
-  }, []);
+  const user = firebase.auth().currentUser;
+  const firestore = firebase.firestore();
+  const onClickRetweet = async () => {
+    const retweet = {
+      type: 'RETWEET',
+      createdAt: Date.now(),
+      creator: {
+        uid: user.uid,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+      },
+      parent: tweetObj,
+    };
+    await firestore.collection('tweets').add(retweet);
+  };
+  const { isDeleteModalOpen, setDeleteModalOpen, onClickDelete } =
+    useDelete(tweetObj);
 
   const createdAt = useMemo(() => {
     if (!tweetObj || !tweetObj) {
@@ -176,6 +167,7 @@ export const LargeTweet = ({ tweetObj, isOwner }) => {
                 {tweetObj.likes?.length || 0}
               </LikeCount>
             </Likes>
+            <RetweetButton onClick={onClickRetweet} />
             <ExportButton>
               <MenuItem
                 icon={<AddBookmarkIcon />}
@@ -344,6 +336,10 @@ const Actions = styled.div`
   border-top: 1px solid rgb(47, 51, 54);
   border-bottom: 1px solid rgb(47, 51, 54);
   height: 48px;
+
+  & > div {
+    width: 25%;
+  }
 `;
 const Likes = styled(ActionItem)`
   &:hover {

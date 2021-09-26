@@ -393,6 +393,10 @@ const Image = styled.img`
 const Actions = styled.div`
   display: flex;
   justify-content: space-between;
+
+  & > div {
+    width: 25%;
+  }
 `;
 const Likes = styled(ActionItem)`
   &:hover {
