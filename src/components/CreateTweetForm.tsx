@@ -1,10 +1,12 @@
 import firebase from 'firebase/app';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
 import styled, { css } from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
+import CrossIcon from '../assets/cross.svg';
 import GlobeIcon from '../assets/globe.svg';
+import PhotoSelectIcon from '../assets/picture.svg';
 
 import { useFirebase } from '../utils/firebase';
 
@@ -13,10 +15,15 @@ type Props = {
 };
 export const CreateTweetForm: React.FC<Props> = ({ user }) => {
   const [tweet, setTweet] = useState('');
-  const submitDisabled = useMemo(() => tweet.trim().length === 0, [tweet]);
   const [isDraftInputDirty, setDraftInputDirty] = useState<boolean>(false);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [attachment, setAttachment] = useState('');
+
+  const submitDisabled = useMemo(
+    () => tweet.trim().length === 0 && !attachment.length,
+    [tweet, attachment],
+  );
 
   const firebase = useFirebase();
   const storage = firebase?.storage();
@@ -37,9 +44,6 @@ export const CreateTweetForm: React.FC<Props> = ({ user }) => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    if (tweet === '') {
-      return;
-    }
     let attachmentUrl: string | undefined;
     if (attachment !== '') {
       attachmentUrl = await uploadAttachment(attachment);
@@ -97,6 +101,19 @@ export const CreateTweetForm: React.FC<Props> = ({ user }) => {
           onFocus={() => setDraftInputDirty(true)}
           placeholder="What's happening?"
         />
+        {attachment && (
+          <ImageContainer>
+            <Image
+              src={attachment}
+              style={{
+                backgroundImage: attachment,
+              }}
+            />
+            <DeleteButton onClick={onClearAttachment}>
+              <CrossIcon />
+            </DeleteButton>
+          </ImageContainer>
+        )}
         {isDraftInputDirty && (
           <PublicScopeNudge>
             <BlueGlobe />
@@ -105,36 +122,16 @@ export const CreateTweetForm: React.FC<Props> = ({ user }) => {
         )}
         <ToolbarContainer>
           <Toolbar>
-            {/* <label htmlFor="attach-file">
-              <span>Add photos</span>
-              Plus
-            </label>
             <input
-              id="attach-file"
+              ref={fileInputRef}
               type="file"
-              accept="image/*"
               onChange={onFileChange}
-              style={{
-                opacity: 0,
-              }}
-            /> */}
+              style={{ display: 'none' }}
+            />
+            <PhotoSelectIcon onClick={() => fileInputRef?.current.click()} />
           </Toolbar>
           <SubmitButton disabled={submitDisabled}>Tweet</SubmitButton>
         </ToolbarContainer>
-        {attachment && (
-          <div>
-            <img
-              src={attachment}
-              style={{
-                backgroundImage: attachment,
-              }}
-            />
-            <div onClick={onClearAttachment}>
-              <span>Remove</span>
-              Times
-            </div>
-          </div>
-        )}
       </Content>
     </Form>
   );
@@ -219,6 +216,13 @@ const Toolbar = styled.div`
   margin-top: 12px;
   display: flex;
   align-items: center;
+
+  & > svg {
+    fill: rgb(29, 155, 240);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
 `;
 
 const SubmitButton = styled.button`
@@ -245,4 +249,50 @@ const SubmitButton = styled.button`
     css`
       opacity: 0.5;
     `};
+`;
+
+const ImageContainer = styled.div`
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 16px;
+  aspect-ratio: 1.77;
+  position: relative;
+  overflow: hidden;
+`;
+const Image = styled.img`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`;
+const DeleteButton = styled.button`
+  cursor: pointer;
+  position: absolute;
+  backdrop-filter: blur(4px);
+  top: 4px;
+  left: 4px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: rgba(15, 20, 25, 0.75);
+  transition-property: background-color, box-shadow;
+  transition-duration: 0.2s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: rgba(39, 44, 48, 0.75);
+  }
+
+  & > svg {
+    width: 18px;
+    height: 18px;
+    fill: white;
+  }
 `;
